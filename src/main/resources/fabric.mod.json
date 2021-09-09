@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "template_mod",
-  "version": "1.0.0",
+  "version": "${version}",
 
   "name": "template_mod",
   "description": "",

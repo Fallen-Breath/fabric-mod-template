@@ -49,6 +49,7 @@ jobs:
       matrix:
         release-branch:
           - '1.15.2'
+          - '1.16.5'
 
     steps:
       - uses: actions/checkout@v2
@@ -65,9 +66,7 @@ jobs:
           ./gradlew build
 
       - name: Upload to the Github release
-        uses: softprops/action-gh-release@v1
+        uses: AButler/upload-release-assets@v2.0
         with:
-          files: |
-            build/libs/*.jar
-            !build/libs/*-dev.jar
-            !build/libs/*-sources.jar
+          files: 'build/libs/*.jar;!build/libs/*-dev.jar;!build/libs/*-sources.jar'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

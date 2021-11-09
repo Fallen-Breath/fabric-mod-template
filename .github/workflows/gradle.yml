@@ -60,6 +60,17 @@ jobs:
         with:
           java-version: 16
 
+      - name: Cache gradle files
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ./.gradle/loom-cache
+          key: ${{ runner.os }}-gradle-release
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Build with Gradle
         run: |
           chmod +x gradlew

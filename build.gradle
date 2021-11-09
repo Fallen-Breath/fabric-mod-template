@@ -10,6 +10,11 @@ archivesBaseName = project.archives_base_name
 version = 'mc' + project.minecraft_version + '-v' + project.mod_version
 group = project.maven_group
 
+String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
+if (buildNumber != null) {
+	version += '+build.' + buildNumber
+}
+
 dependencies {
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"

@@ -11,6 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: !startsWith(github.ref, 'refs/tags/v')
 
     steps:
       - uses: actions/checkout@v2
@@ -70,7 +71,12 @@ jobs:
           output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
           echo "::set-output name=jarname::$output"
 
-      - name: Upload to the Github release`
+      - uses: actions/upload-artifact@v2
+        with:
+          name: [${{ matrix.release-branch }}] build-artifacts
+          path: build/libs/
+
+      - name: Upload to the Github release
         uses: softprops/action-gh-release@v1
         with:
           files: build/libs/${{ steps.findjar.outputs.jarname }}

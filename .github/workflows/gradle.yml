@@ -47,7 +47,7 @@ jobs:
     strategy:
       matrix:
         release-branch:
-          - 'master'
+          - '1.15.2'
 
     steps:
       - uses: actions/checkout@v2

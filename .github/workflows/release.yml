@@ -1,25 +1,25 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    paths:
-      - "*.gradle"
-      - "gradle.properties"
-      - "src/**"
-      - ".github/**"
   release:
     types:
       - published
-  pull_request:
 
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
-    if: github.event_name != 'release'
+
+    strategy:
+      matrix:
+        include:
+          - branch: 1.15.2
+          - branch: 1.16.5
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
       - name: Set up JDK 16
         uses: actions/setup-java@v1
         with:
@@ -41,9 +41,20 @@ jobs:
           chmod +x gradlew
           ./gradlew build
         env:
-          BUILD_ID: '$GITHUB_RUN_NUMBER'
+          BUILD_RELEASE: true
+
+      - name: Find correct JAR
+        id: findjar
+        run: |
+          output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
+          echo "::set-output name=jarname::$output"
 
       - uses: actions/upload-artifact@v2
         with:
-          name: build-artifacts
+          name: '[${{ matrix.release-branch }}] build-artifacts'
           path: build/libs/
+
+      - name: Upload to the Github release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/libs/${{ steps.findjar.outputs.jarname }}

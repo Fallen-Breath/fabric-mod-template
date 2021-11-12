@@ -34,13 +34,10 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          echo ${{ env.GITHUB_RUN_NUMBER }}
-          echo ${GITHUB_RUN_NUMBER}
-          echo $GITHUB_RUN_NUMBER
           chmod +x gradlew
           ./gradlew build
         env:
-          BUILD_ID: ${{ env.GITHUB_RUN_NUMBER }}
+          BUILD_ID: '$GITHUB_RUN_NUMBER'
 
       - uses: actions/upload-artifact@v2
         with:

@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Dev Builds
 
 on:
   push:
@@ -13,7 +13,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event_name != 'release'
 
     steps:
       - uses: actions/checkout@v2

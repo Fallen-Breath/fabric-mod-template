@@ -7,9 +7,6 @@ on:
       - "gradle.properties"
       - "src/**"
       - ".github/**"
-  release:
-    types:
-      - published
   pull_request:
 
 

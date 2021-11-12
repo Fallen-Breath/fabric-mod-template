@@ -12,7 +12,7 @@ if (System.getenv("BUILD_RELEASE") != "true") {
 }
 String buildNumber = System.getenv("BUILD_ID")
 if (buildNumber != null) {
-	versionSuffix = '+build.' + buildNumber
+	versionSuffix += '+build.' + buildNumber
 }
 String fullModVersion = project.mod_version + versionSuffix
 

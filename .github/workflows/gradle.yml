@@ -35,6 +35,8 @@ jobs:
 
       - name: Build with Gradle
         run: |
+          echo GITHUB_RUN_ID $GITHUB_RUN_ID
+          echo github.run_id ${{ github.run_id}}}
           chmod +x gradlew
           ./gradlew build
         env:

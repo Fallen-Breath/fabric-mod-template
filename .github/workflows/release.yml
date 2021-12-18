@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: 'Display current branch name'
+      - name: 'Display current branch/tag name'
         run: echo ${{ github.ref_name }}
 
       - id: setmatrix

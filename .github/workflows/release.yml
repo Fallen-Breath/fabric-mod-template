@@ -28,6 +28,9 @@ jobs:
           # inputFile: '.github/workflows/matrix_includes.json' # Default input file path
           filter: '[? `${{ github.event_name }}` == `release` || `${{ github.ref_name }}` == branch]'
 
+      - name: 'Print matrix'
+        run: echo ${{ steps.setmatrix.outputs.matrix }}
+
   release:
     needs: matrix_prep
     runs-on: ubuntu-latest

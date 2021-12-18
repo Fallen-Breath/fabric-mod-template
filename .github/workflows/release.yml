@@ -26,7 +26,7 @@ jobs:
         uses: JoshuaTheMiller/conditional-build-matrix@0.0.1
         with:
           # inputFile: '.github/workflows/matrix_includes.json' # Default input file path
-          filter: '[?branch==`${{ github.ref_name }}`]'
+          filter: '[? `${{ github.event_name }}` == `release` || `${{ github.ref_name }}` == branch]'
 
   release:
     needs: matrix_prep

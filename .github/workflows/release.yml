@@ -78,15 +78,22 @@ jobs:
           name: '[${{ matrix.branch }}] build-artifacts'
           path: build/libs/
 
-      - name: Upload to Github release
-        if: ${{ github.event_name == 'release' }}
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/libs/${{ steps.findjar.outputs.jarname }}
+      - name: Generate publish related infomation
+        id: release_info
+        run: |
+          if [ $GITHUB_EVENT_NAME == 'release' ]
+          then
+              echo "::set-output name=tag_name::"  # leave an empty value here so softprops/action-gh-release will use the default value
+          elif [ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]
+          then
+              echo "::set-output name=tag_name::${{ github.event.inputs.target_release_tag }}"
+          else
+              echo Unknown github event name $GITHUB_EVENT_NAME
+              exit 1
+          fi
 
-      - name: Upload to specific Github release
-        if: ${{ github.event_name == 'workflow_dispatch' }}
+      - name: Upload to Github release
         uses: softprops/action-gh-release@v1
         with:
           files: build/libs/${{ steps.findjar.outputs.jarname }}
-          tag_name: ${{ github.event.inputs.target_release_tag }}
+          tag_name: ${{ steps.release_info.outputs.tag_name }}

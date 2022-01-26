@@ -1,6 +1,18 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.11-SNAPSHOT'
 	id 'maven-publish'
+
+	// https://github.com/Juuxel/LoomQuiltflower
+	id 'io.github.juuxel.loom-quiltflower' version '1.6.0'
+}
+
+repositories {
+	maven {
+		url 'https://jitpack.io'
+	}
+	maven {
+		url 'https://www.cursemaven.com'
+	}
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -21,16 +33,14 @@ version = 'mc' + project.minecraft_version + '-v' + fullModVersion
 group = project.maven_group
 
 dependencies {
-	//to change the versions see the gradle.properties file
+	// loom
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	// modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
+	// dependencies
+//	modImplementation fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
+//	include fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
 }
 
 processResources {
@@ -48,16 +58,17 @@ tasks.withType(JavaCompile) {
 	options.encoding = "UTF-8"
 }
 
-// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-// if it is present.
-// If you remove this task, sources will not be generated.
-task sourcesJar(type: Jar, dependsOn: classes) {
-	classifier = "sources"
-	from sourceSets.main.allSource
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
 }
 
 jar {
-	from "LICENSE"
+	from("LICENSE") {
+		rename { "${it}_${project.archivesBaseName}"}
+	}
 }
 
 // configure the maven publication

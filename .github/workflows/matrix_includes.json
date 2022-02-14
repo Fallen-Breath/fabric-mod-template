@@ -1,8 +1,10 @@
 [
   {
-    "branch": "1.15.2"
+    "branch": "1.14.4",
+    "game_versions": "1.14.4"
   },
   {
-    "branch": "1.16.5"
+    "branch": "1.15.2",
+    "game_versions": "1.15.2"
   }
 ]

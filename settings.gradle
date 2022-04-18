@@ -27,6 +27,7 @@ pluginManagement {
 }
 
 def versions = Arrays.asList(
+        "1.14.4",
         "1.15.2",
 )
 for (String version : versions) {

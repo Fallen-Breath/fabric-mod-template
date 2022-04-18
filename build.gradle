@@ -1,18 +1,18 @@
 plugins {
-    id("maven-publish")
-    id("fabric-loom") version "0.11-SNAPSHOT" apply false
+    id 'maven-publish'
+    id 'fabric-loom' version '0.10-SNAPSHOT' apply false
 
-    // https://github.com/Juuxel/LoomQuiltflower
-    id("io.github.juuxel.loom-quiltflower") version "1.7.0" apply false
+    // https://github.com/Juuxel/loom-quiltflower-mini
+    id 'io.github.juuxel.loom-quiltflower-mini' version '1.3.0' apply false
 
     // https://github.com/ReplayMod/preprocessor
-    id("com.replaymod.preprocess") version "0ab22d2"
+    id 'com.replaymod.preprocess' version '0ab22d2'
 }
 
 preprocess {
-    def mc11404 = createNode("1.14.4", 11404, "yarn")
-    def mc11502 = createNode("1.15.2", 11502, "yarn")
-    def mc11605 = createNode("1.16.5", 11605, "yarn")
+    def mc11404 = createNode('1.14.4', 11404, 'yarn')
+    def mc11502 = createNode('1.15.2', 11502, 'yarn')
+    def mc11605 = createNode('1.16.5', 11605, 'yarn')
 
     mc11605.link(mc11502, null)
     mc11502.link(mc11404, null)

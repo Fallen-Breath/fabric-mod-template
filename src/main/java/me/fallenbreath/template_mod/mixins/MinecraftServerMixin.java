@@ -1,5 +1,6 @@
 package me.fallenbreath.template_mod.mixins;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,5 +25,9 @@ public abstract class MinecraftServerMixin
 		//#elseif MC >= 11400
 		//$$ System.err.println("Hello world from mc11400 branch");
 		//#endif
+
+		CompoundTag nbt = new CompoundTag();
+		nbt.putString("key", "value");
+		System.err.println("nbt: " + nbt);
 	}
 }

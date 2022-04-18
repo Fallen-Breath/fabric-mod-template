@@ -1,15 +1,11 @@
-plugins {
-	id 'maven-publish'
-}
-
+apply plugin: 'maven-publish'
 apply plugin: 'fabric-loom'
 apply plugin: 'io.github.juuxel.loom-quiltflower'
 apply plugin: 'com.replaymod.preprocess'
 
 preprocess {
-	vars.put("MC", "${project.minecraft_version_number}")
+	vars.put("MC", project.minecraft_version_number as int)
 }
-
 
 repositories {
 	maven {
@@ -29,6 +25,12 @@ dependencies {
 	// dependencies
 //	modImplementation fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
 //	include fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
+}
+
+loom {
+	runConfigs.all {
+		ideConfigGenerated = true
+	}
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -52,7 +54,11 @@ processResources {
 	inputs.property "version", fullModVersion
 
 	filesMatching("fabric.mod.json") {
-		expand "version": fullModVersion
+		def valueMap = [
+				"version": fullModVersion,
+				"minecraft_dependency": project.minecraft_dependency
+		]
+		expand valueMap
 	}
 }
 

@@ -1,4 +1,5 @@
 plugins {
+    id("maven-publish")
     id("fabric-loom") version "0.11-SNAPSHOT" apply false
 
     // https://github.com/Juuxel/LoomQuiltflower
@@ -9,8 +10,10 @@ plugins {
 }
 
 preprocess {
-    val mc11404 = createNode("1.14.4", 11404, "yarn")
-    val mc11502 = createNode("1.15.2", 11502, "yarn")
+    def mc11404 = createNode("1.14.4", 11404, "yarn")
+    def mc11502 = createNode("1.15.2", 11502, "yarn")
+    def mc11605 = createNode("1.16.5", 11605, "yarn")
 
-    mc11502.link(mc11404)
+    mc11605.link(mc11502, null)
+    mc11502.link(mc11404, null)
 }

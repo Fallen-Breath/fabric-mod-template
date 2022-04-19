@@ -32,7 +32,9 @@ dependencies {
 
 loom {
 	runConfigs.all {
+		// to make sure it generates all "Minecraft Client (:subproject_name)" applications
 		ideConfigGenerated = true
+		runDir '../../run'
 	}
 }
 

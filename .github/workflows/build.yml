@@ -1,4 +1,4 @@
-name: Dev Builds
+name: Step Build
 
 on:
   workflow_call:

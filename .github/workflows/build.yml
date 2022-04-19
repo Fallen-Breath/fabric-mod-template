@@ -1,4 +1,4 @@
-name: Step Build
+name: Step-Build
 
 on:
   workflow_call:

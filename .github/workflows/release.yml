@@ -6,8 +6,13 @@ on:
       - published
   workflow_dispatch:
     inputs:
+      target_mc_version:
+        description: The specified Minecraft version to be released.
+        type: string
+        required: false
       target_release_tag:
         description: The tag of the release you want to append the artifact to
+        type: string
         required: true
 
 
@@ -19,16 +24,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: 'Display current branch/tag name'
-        run: echo ${{ github.ref_name }}
+      - name: Display context
+        run: | 
+          echo ref_name = ${{ github.ref_name }}
+          echo target_mc_version = ${{ inputs.target_mc_version }}
+          echo target_release_tag = ${{ inputs.target_release_tag }}
 
       - id: setmatrix
         uses: JoshuaTheMiller/conditional-build-matrix@0.0.1
         with:
           # inputFile: '.github/workflows/matrix_includes.json' # Default input file path
-          filter: '[? `${{ github.event_name }}` == `release` || `${{ github.ref_name }}` == branch]'
+          filter: '[? `${{ github.event_name }}` == `release` || `${{ inputs.target_mc_version }}` == `` || `${{ github.ref_name }}` == `${{ inputs.target_mc_version }}`]'
 
-      - name: 'Print matrix'
+      - name: Print matrix
         run: echo ${{ steps.setmatrix.outputs.matrix }}
 
   build:

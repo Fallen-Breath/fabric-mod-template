@@ -8,10 +8,12 @@ on:
     inputs:
       target_subproject:
         description: The subproject name of the specified Minecraft version to be released.
+        type: string
         required: false
         default: ''
       target_release_tag:
         description: The tag of the release you want to append the artifact to
+        type: string
         required: true
 
 
@@ -26,14 +28,14 @@ jobs:
       - name: Display context
         run: | 
           echo ref_name = ${{ github.ref_name }}
-          echo target_subproject = ${{ inputs.target_subproject }}
-          echo target_release_tag = ${{ inputs.target_release_tag }}
+          echo target_subproject = ${{ github.event.inputs.target_subproject }}
+          echo target_release_tag = ${{ github.event.inputs.target_release_tag }}
 
       - id: setmatrix
         uses: JoshuaTheMiller/conditional-build-matrix@0.0.1
         with:
           # inputFile: '.github/workflows/matrix_includes.json' # Default input file path
-          filter: '[? `${{ github.event_name }}` == `release` || `${{ inputs.target_subproject }}` == `` || subproject_dir == `${{ inputs.target_subproject }}` ]'
+          filter: '[? `${{ github.event_name }}` == `release` || `${{ github.event.inputs.target_subproject }}` == `` || subproject_dir == `${{ github.event.inputs.target_subproject }}` ]'
 
       - name: Print matrix
         run: echo ${{ steps.setmatrix.outputs.matrix }}

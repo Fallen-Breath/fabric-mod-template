@@ -6,8 +6,8 @@ on:
       - published
   workflow_dispatch:
     inputs:
-      target_mc_version:
-        description: The specified Minecraft version to be released.
+      target_subproject:
+        description: The subproject name of the specified Minecraft version to be released.
         type: string
         required: false
       target_release_tag:
@@ -27,14 +27,14 @@ jobs:
       - name: Display context
         run: | 
           echo ref_name = ${{ github.ref_name }}
-          echo target_mc_version = ${{ inputs.target_mc_version }}
+          echo target_subproject = ${{ inputs.target_subproject }}
           echo target_release_tag = ${{ inputs.target_release_tag }}
 
       - id: setmatrix
         uses: JoshuaTheMiller/conditional-build-matrix@0.0.1
         with:
           # inputFile: '.github/workflows/matrix_includes.json' # Default input file path
-          filter: '[? `${{ github.event_name }}` == `release` || `${{ inputs.target_mc_version }}` == `` || `${{ github.ref_name }}` == `${{ inputs.target_mc_version }}`]'
+          filter: '[? `${{ github.event_name }}` == `release` || `${{ inputs.target_subproject }}` == `` || subproject_dir == `${{ inputs.target_subproject }}` ]'
 
       - name: Print matrix
         run: echo ${{ steps.setmatrix.outputs.matrix }}

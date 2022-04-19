@@ -5,6 +5,7 @@ apply plugin: 'com.replaymod.preprocess'
 
 preprocess {
 	vars.put("MC", project.minecraft_version_number as int)
+	tabIndentation = true
 }
 
 repositories {

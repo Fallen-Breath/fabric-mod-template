@@ -6,7 +6,8 @@ plugins {
     id 'io.github.juuxel.loom-quiltflower' version '1.7.0' apply false
 
     // https://github.com/ReplayMod/preprocessor
-    id 'com.replaymod.preprocess' version '0ab22d2'
+    // https://github.com/Fallen-Breath/preprocessor
+    id 'com.replaymod.preprocess' version 'b223d4a'
 }
 
 preprocess {

@@ -1,6 +1,6 @@
 apply plugin: 'maven-publish'
 apply plugin: 'fabric-loom'
-apply plugin: 'io.github.juuxel.loom-quiltflower-mini'
+apply plugin: 'io.github.juuxel.loom-quiltflower'
 apply plugin: 'com.replaymod.preprocess'
 
 preprocess {
@@ -31,6 +31,10 @@ loom {
 	runConfigs.all {
 		ideConfigGenerated = true
 	}
+}
+
+remapJar {
+	remapperIsolation = true
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8

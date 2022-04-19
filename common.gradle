@@ -44,10 +44,10 @@ targetCompatibility = JavaVersion.VERSION_1_8
 String versionSuffix = ''
 if (System.getenv("BUILD_RELEASE") != "true") {
 	versionSuffix += '-SHAPSHOT'
-}
-String buildNumber = System.getenv("BUILD_ID")
-if (buildNumber != null) {
-	versionSuffix += '+build.' + buildNumber
+	String buildNumber = System.getenv("BUILD_ID")
+	if (buildNumber != null) {
+		versionSuffix += '+build.' + buildNumber
+	}
 }
 String fullModVersion = project.mod_version + versionSuffix
 

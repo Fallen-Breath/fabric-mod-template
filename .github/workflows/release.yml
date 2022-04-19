@@ -95,7 +95,7 @@ jobs:
         id: minecraft_version
         uses: christian-draeger/read-properties@1.0.1
         with:
-          path: ${{ format('versions/{}/gradle.properties', matrix.subproject_dir) }}
+          path: ${{ format('versions/{0}/gradle.properties', matrix.subproject_dir) }}
           property: minecraft_version
 
       - name: Publish Minecraft Mods
@@ -110,7 +110,7 @@ jobs:
           github-tag: ${{ steps.release_info.outputs.tag_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-          files-primary: ${{ format('versions/{}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }}
+          files-primary: ${{ format('versions/{0}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }}
           files-secondary: ''
 
           name: ${{ format('FabricModTemplate v{0} for mc{1}', steps.mod_version.outputs.value, steps.minecraft_version.outputs.value) }}

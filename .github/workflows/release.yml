@@ -8,11 +8,10 @@ on:
     inputs:
       target_subproject:
         description: The subproject name of the specified Minecraft version to be released.
-        type: string
         required: false
+        default: ''
       target_release_tag:
         description: The tag of the release you want to append the artifact to
-        type: string
         required: true
 
 

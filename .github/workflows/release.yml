@@ -60,6 +60,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+          path: build-artifacts
 
       - name: Get github release information
         if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -110,7 +111,7 @@ jobs:
           github-tag: ${{ steps.release_info.outputs.tag_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-          files-primary: ${{ format('versions/{0}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }}
+          files-primary: ${{ format('build-artifacts/{0}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }}
           files-secondary: ''
 
           name: ${{ format('FabricModTemplate v{0} for mc{1}', steps.mod_version.outputs.value, steps.minecraft_version.outputs.value) }}

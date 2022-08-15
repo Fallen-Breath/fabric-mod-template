@@ -9,7 +9,7 @@
   },
   {
     "subproject_dir": "1.16.5",
-    "game_versions": "1.16.4\n1.16.5"
+    "game_versions": "1.16.5"
   },
   {
     "subproject_dir": "1.17.1",
@@ -20,7 +20,7 @@
     "game_versions": "1.18.2"
   },
   {
-    "subproject_dir": "snapshot",
-    "game_versions": "22w15a"
+    "subproject_dir": "1.19.x",
+    "game_versions": "1.19.2"
   }
 ]

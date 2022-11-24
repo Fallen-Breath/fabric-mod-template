@@ -85,7 +85,7 @@ jobs:
           properties: 'minecraft_version game_versions'
 
       - name: Publish Minecraft Mods
-        uses: Kir-Antipov/mc-publish@v2.1
+        uses: Kir-Antipov/mc-publish@v3.2
         with:
           modrinth-id: _INSERT_MODRITH_MOD_ID_HERE_
           modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}

@@ -26,6 +26,7 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
     with:
+      target_subproject: ${{ github.event.inputs.target_subproject }}
       release: true
 
   release:
@@ -55,7 +56,7 @@ jobs:
         with:
           tag: ${{ github.event.inputs.target_release_tag }}
 
-      - name: Generate publish related infomation
+      - name: Generate publish related information
         id: release_info
         run: |
           if [ $GITHUB_EVENT_NAME == 'release' ]

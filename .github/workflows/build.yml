@@ -8,7 +8,7 @@ on:
         required: false
         default: false
       target_subproject:
-        description: The subproject name of the specified Minecraft version to be built.
+        description: The subproject name of the specified Minecraft version to be built. Leave it empty to build all
         type: string
         required: false
         default: ''

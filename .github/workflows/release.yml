@@ -70,26 +70,19 @@ jobs:
               exit 1
           fi
 
-      - name: Read Properties mod_version
-        id: mod_version
-        uses: christian-draeger/read-properties@1.0.1
+      - name: Read common properties
+        id: properties_g
+        uses: christian-draeger/read-properties@1.1.1
         with:
           path: gradle.properties
-          property: mod_version
+          properties: 'mod_version'
 
-      - name: Read Properties minecraft_version
-        id: minecraft_version
-        uses: christian-draeger/read-properties@1.0.1
+      - name: Read version-specific properties
+        id: properties_v
+        uses: christian-draeger/read-properties@1.1.1
         with:
           path: ${{ format('versions/{0}/gradle.properties', matrix.subproject_dir) }}
-          property: minecraft_version
-
-      - name: Read Properties game_versions
-        id: game_versions
-        uses: christian-draeger/read-properties@1.0.1
-        with:
-          path: ${{ format('versions/{0}/gradle.properties', matrix.subproject_dir) }}
-          property: game_versions
+          properties: 'minecraft_version game_versions'
 
       - name: Publish Minecraft Mods
         uses: Kir-Antipov/mc-publish@v2.1
@@ -106,13 +99,13 @@ jobs:
           files-primary: ${{ format('build-artifacts/{0}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }}
           files-secondary: ''
 
-          name: ${{ format('FabricModTemplate v{0} for mc{1}', steps.mod_version.outputs.value, steps.minecraft_version.outputs.value) }}
-          version: ${{ format('mc{0}-v{1}', steps.minecraft_version.outputs.value, steps.mod_version.outputs.value) }}
+          name: ${{ format('FabricModTemplate v{0} for mc{1}', steps.properties_g.outputs.mod_version, steps.properties_v.outputs.minecraft_version) }}
+          version: ${{ format('mc{0}-v{1}', steps.properties_v.outputs.minecraft_version, steps.properties_g.outputs.mod_version) }}
           version-type: release
           changelog: ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}  # one of them should be an empty string (null)
 
           loaders: fabric
-          game-versions: ${{ steps.game_versions.outputs.value }}
+          game-versions: ${{ steps.properties_v.outputs.game_versions }}
           version-resolver: exact
 
           retry-attempts: 3

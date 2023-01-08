@@ -61,6 +61,8 @@ else {
 }
 
 String versionSuffix = ''
+// detect github action environment variables
+// https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
 if (System.getenv("BUILD_RELEASE") != "true") {
 	String buildNumber = System.getenv("BUILD_ID")
 	versionSuffix += buildNumber != null ? ('+build.' + buildNumber) : '-SHAPSHOT'
@@ -85,6 +87,7 @@ processResources {
 	}
 }
 
+// https://github.com/Fallen-Breath/yamlang
 yamlang {
 	targetSourceSets = [sourceSets.main]
 	inputDir = "assets/${project.mod_id}/lang"
@@ -110,6 +113,7 @@ jar {
 	}
 }
 
+// https://github.com/CadixDev/licenser
 license {
 	// use "gradle updateLicenses" to apply license headers
 	header = rootProject.file('LICENSE-header.txt')

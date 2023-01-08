@@ -116,7 +116,7 @@ jar {
 // https://github.com/CadixDev/licenser
 license {
 	// use "gradle updateLicenses" to apply license headers
-	header = rootProject.file('LICENSE-header.txt')
+	header = rootProject.file('HEADER.txt')
 	include '**/*.java'
 	skipExistingHeaders = true
 	properties {

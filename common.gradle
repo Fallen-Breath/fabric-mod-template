@@ -1,4 +1,5 @@
 apply plugin: 'maven-publish'
+apply plugin: 'org.cadixdev.licenser'
 apply plugin: 'fabric-loom'
 apply plugin: 'io.github.juuxel.loom-quiltflower'
 apply plugin: 'com.replaymod.preprocess'
@@ -67,8 +68,8 @@ if (System.getenv("BUILD_RELEASE") != "true") {
 String fullModVersion = project.mod_version + versionSuffix
 
 version = 'v' + fullModVersion
-group = project.parent.maven_group
-archivesBaseName = project.parent.archives_base_name + '-mc' + project.minecraft_version
+group = rootProject.maven_group
+archivesBaseName = rootProject.archives_base_name + '-mc' + project.minecraft_version
 
 processResources {
 	inputs.property "version", fullModVersion
@@ -102,8 +103,20 @@ java {
 }
 
 jar {
-	from("../../LICENSE") {
+	from(rootProject.file('LICENSE')) {
 		rename { "${it}_${project.archivesBaseName}"}
+	}
+}
+
+license {
+	// use "gradle updateLicenses" to apply license headers
+	header = rootProject.file('LICENSE-header.txt')
+	include '**/*.java'
+	skipExistingHeaders = true
+	properties {
+		name = 'TemplateMod'
+		author = 'Fallen_Breath'
+		year = Calendar.getInstance().get(Calendar.YEAR).toString()
 	}
 }
 

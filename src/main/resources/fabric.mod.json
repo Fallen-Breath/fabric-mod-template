@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "template_mod",
+  "id": "${id}",
   "version": "${version}",
 
-  "name": "template_mod",
+  "name": "${name}",
   "description": "",
   "authors": [
     "Fallen_Breath"
@@ -13,7 +13,7 @@
     "sources": "https://github.com/"
   },
 
-  "icon": "assets/template_mod/icon.png",
+  "icon": "assets/${id}/icon.png",
 
   "environment": "*",
   "entrypoints": {
@@ -22,7 +22,7 @@
     ]
   },
   "mixins": [
-    "template_mod.mixins.json"
+    "${id}.mixins.json"
   ],
 
   "depends": {

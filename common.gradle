@@ -68,14 +68,16 @@ if (System.getenv("BUILD_RELEASE") != "true") {
 String fullModVersion = project.mod_version + versionSuffix
 
 version = 'v' + fullModVersion
-group = rootProject.maven_group
-archivesBaseName = rootProject.archives_base_name + '-mc' + project.minecraft_version
+group = project.maven_group
+archivesBaseName = project.archives_base_name + '-mc' + project.minecraft_version
 
 processResources {
 	inputs.property "version", fullModVersion
 
 	filesMatching("fabric.mod.json") {
 		def valueMap = [
+				"id": project.mod_id,
+				"name": project.mod_name,
 				"version": fullModVersion,
 				"minecraft_dependency": project.minecraft_dependency,
 		]
@@ -85,7 +87,7 @@ processResources {
 
 yamlang {
 	targetSourceSets = [sourceSets.main]
-	inputDir = 'assets/template_mod/lang'
+	inputDir = "assets/${project.mod_id}/lang"
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
@@ -114,7 +116,7 @@ license {
 	include '**/*.java'
 	skipExistingHeaders = true
 	properties {
-		name = 'TemplateMod'
+		name = project.mod_name
 		author = 'Fallen_Breath'
 		year = Calendar.getInstance().get(Calendar.YEAR).toString()
 	}

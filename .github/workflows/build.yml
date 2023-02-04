@@ -39,7 +39,7 @@ jobs:
       - name: Get subproject name to build
         id: subproject_info
         run: |
-          if [ ${{ inputs.target_subproject }} != '' ]
+          if [ "${{ inputs.target_subproject }}" != "" ]
           then
               echo "prefix=${{ inputs.target_subproject }}:" >> $GITHUB_OUTPUT
           else

@@ -31,7 +31,7 @@ preprocess {
 //    mc119.link(mcSnapshot, null)
 }
 
-task buildAndGather {
+tasks.register('buildAndGather') {
     subprojects {
         dependsOn project.name + ':build'
     }

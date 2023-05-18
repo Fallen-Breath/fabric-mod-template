@@ -1,55 +1,55 @@
 plugins {
-    id 'maven-publish'
-    id 'com.github.hierynomus.license' version '0.16.1' apply false
-    id 'fabric-loom' version '1.2-SNAPSHOT' apply false
+	id 'maven-publish'
+	id 'com.github.hierynomus.license' version '0.16.1' apply false
+	id 'fabric-loom' version '1.2-SNAPSHOT' apply false
 
-    // https://github.com/Juuxel/LoomQuiltflower
-    id 'io.github.juuxel.loom-quiltflower' version '1.8.0' apply false
+	// https://github.com/Juuxel/LoomQuiltflower
+	id 'io.github.juuxel.loom-quiltflower' version '1.8.0' apply false
 
-    // https://github.com/ReplayMod/preprocessor
-    // https://github.com/Fallen-Breath/preprocessor
-    id 'com.replaymod.preprocess' version 'e1050f4d72'
+	// https://github.com/ReplayMod/preprocessor
+	// https://github.com/Fallen-Breath/preprocessor
+	id 'com.replaymod.preprocess' version 'e1050f4d72'
 
-    // https://github.com/Fallen-Breath/yamlang
-    id 'me.fallenbreath.yamlang' version '1.2.1' apply false
+	// https://github.com/Fallen-Breath/yamlang
+	id 'me.fallenbreath.yamlang' version '1.2.1' apply false
 }
 
 preprocess {
-    def mc114      = createNode('1.14.4'  , 1_14_04, 'yarn')
-    def mc115      = createNode('1.15.2'  , 1_15_02, 'yarn')
-    def mc116      = createNode('1.16.5'  , 1_16_05, 'yarn')
-    def mc117      = createNode('1.17.1'  , 1_17_01, 'yarn')
-    def mc118      = createNode('1.18.2'  , 1_18_02, 'yarn')
-    def mc119      = createNode('1.19.4'  , 1_19_04, 'yarn')
-//    def mcSnapshot = createNode('snapshot', 1_19_00, 'yarn')
+	def mc114	  = createNode('1.14.4'  , 1_14_04, 'yarn')
+	def mc115	  = createNode('1.15.2'  , 1_15_02, 'yarn')
+	def mc116	  = createNode('1.16.5'  , 1_16_05, 'yarn')
+	def mc117	  = createNode('1.17.1'  , 1_17_01, 'yarn')
+	def mc118	  = createNode('1.18.2'  , 1_18_02, 'yarn')
+	def mc119	  = createNode('1.19.4'  , 1_19_04, 'yarn')
+//	def mcSnapshot = createNode('snapshot', 1_19_00, 'yarn')
 
-    mc115.link(mc114, null)
-    mc115.link(mc116, null)
-    mc116.link(mc117, null)
-    mc117.link(mc118, null)
-    mc118.link(mc119, null)
-//    mc119.link(mcSnapshot, null)
+	mc115.link(mc114, null)
+	mc115.link(mc116, null)
+	mc116.link(mc117, null)
+	mc117.link(mc118, null)
+	mc118.link(mc119, null)
+//	mc119.link(mcSnapshot, null)
 }
 
 tasks.register('buildAndGather') {
-    subprojects {
-        dependsOn project.name + ':build'
-    }
-    doFirst {
-        println 'Gathering builds'
-        delete fileTree(project.projectDir.toPath().resolve('build/libs')) {
-            include '*'
-        }
-        copy {
-            subprojects {
-                def libDir = project.projectDir.toPath().resolve('build/libs')
-                from(libDir) {
-                    include '*.jar'
-                    exclude '*-dev.jar', '*-sources.jar'
-                }
-                into 'build/libs/'
-                duplicatesStrategy DuplicatesStrategy.INCLUDE
-            }
-        }
-    }
+	subprojects {
+		dependsOn project.name + ':build'
+	}
+	doFirst {
+		println 'Gathering builds'
+		delete fileTree(project.projectDir.toPath().resolve('build/libs')) {
+			include '*'
+		}
+		copy {
+			subprojects {
+				def libDir = project.projectDir.toPath().resolve('build/libs')
+				from(libDir) {
+					include '*.jar'
+					exclude '*-dev.jar', '*-sources.jar'
+				}
+				into 'build/libs/'
+				duplicatesStrategy DuplicatesStrategy.INCLUDE
+			}
+		}
+	}
 }

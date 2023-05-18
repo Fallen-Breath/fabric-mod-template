@@ -37,6 +37,9 @@ tasks.register('buildAndGather') {
     }
     doFirst {
         println 'Gathering builds'
+        delete fileTree(project.projectDir.toPath().resolve('build/libs')) {
+            include '*'
+        }
         copy {
             subprojects {
                 def libDir = project.projectDir.toPath().resolve('build/libs')

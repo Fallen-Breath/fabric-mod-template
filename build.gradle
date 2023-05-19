@@ -4,7 +4,8 @@ plugins {
 	id 'fabric-loom' version '1.2-SNAPSHOT' apply false
 
 	// https://github.com/Juuxel/LoomQuiltflower
-	id 'io.github.juuxel.loom-quiltflower' version '1.8.0' apply false
+	// loom-quiltflower doesn't work in gradle 8+, disable for now
+	// id 'io.github.juuxel.loom-quiltflower' version '1.8.0' apply false
 
 	// https://github.com/ReplayMod/preprocessor
 	// https://github.com/Fallen-Breath/preprocessor

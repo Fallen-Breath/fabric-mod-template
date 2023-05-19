@@ -15,7 +15,7 @@ body:
     attributes:
       label: Description
       description: Describe the feature you want, as detailed as possible
-      placeholder: I want a fancy starry sky at midnight.
+      placeholder: I want to see a fancy starry sky when I look up at midnight.
     validations:
       required: true
   - type: textarea

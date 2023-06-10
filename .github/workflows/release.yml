@@ -107,12 +107,20 @@ jobs:
         id: file_info
         run: |
           shopt -s extglob
-          FILE_PATH=$(ls ${{ format('build-artifacts/{0}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }})
+          FILE_PATHS=$(ls ${{ format('build-artifacts/{0}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }})
+          if (( ${#FILE_PATHS[@]} != 1 )); then
+              echo "Error: Found ${#FILE_PATHS[@]} files, expected exactly 1"
+              exit 1
+          else
+              FILE_PATH=${FILE_PATHS[0]}
+          fi
+          
+          FILE_NAME=$(basename $FILE_PATH)
           FILE_HASH=$(sha256sum $FILE_PATH | awk '{ print $1 }')
-          echo "File: $FILE_PATH"
-          echo "SHA-256: $FILE_HASH"
           echo "path=$FILE_PATH" >> $GITHUB_OUTPUT
+          echo "name=$FILE_NAME" >> $GITHUB_OUTPUT
           echo "hash=$FILE_HASH" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
 
       - name: Publish Minecraft Mods
         uses: Kir-Antipov/mc-publish@v3.2
@@ -137,7 +145,10 @@ jobs:
             
             -------
             
-            - SHA-256 of `${{ steps.file_info.outputs.path }}`: `${{ steps.file_info.outputs.hash }}`
+            Build Information
+            
+            - File name: `${{ steps.file_info.outputs.name }}`
+            - SHA-256: `${{ steps.file_info.outputs.hash }}`
             - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
           loaders: fabric

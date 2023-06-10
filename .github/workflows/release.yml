@@ -103,6 +103,17 @@ jobs:
           echo -e "${{ steps.properties_v.outputs.game_versions }}" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
+      - name: Prepare file information
+        id: file_info
+        run: |
+          shopt -s extglob
+          FILE_PATH=$(ls ${{ format('build-artifacts/{0}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }})
+          FILE_HASH=$(sha256sum $FILE_PATH | awk '{ print $1 }')
+          echo "File: $FILE_PATH"
+          echo "SHA-256: $FILE_HASH"
+          echo "path=$FILE_PATH" >> $GITHUB_OUTPUT
+          echo "hash=$FILE_HASH" >> $GITHUB_OUTPUT
+
       - name: Publish Minecraft Mods
         uses: Kir-Antipov/mc-publish@v3.2
         with:
@@ -115,13 +126,19 @@ jobs:
           github-tag: ${{ steps.release_info.outputs.tag_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-          files-primary: ${{ format('build-artifacts/{0}/build/libs/!(*-@(dev|sources)).jar', matrix.subproject_dir) }}
+          files-primary: ${{ steps.file_info.outputs.path }}
           files-secondary: ''
 
           name: ${{ format('{0} v{1} for mc{2}', steps.properties_g.outputs.mod_name, steps.properties_g.outputs.mod_version, steps.properties_v.outputs.minecraft_version) }}
           version: ${{ format('mc{0}-v{1}', steps.properties_v.outputs.minecraft_version, steps.properties_g.outputs.mod_version) }}
           version-type: release
-          changelog: ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}  # one of them should be an empty string (null)
+          changelog: |-
+            ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
+            
+            -------
+            
+            - SHA-256 of `${{ steps.file_info.outputs.path }}`: `${{ steps.file_info.outputs.hash }}`
+            - Built from: https://${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
           loaders: fabric
           game-versions: ${{ steps.game_versions.outputs.value }}

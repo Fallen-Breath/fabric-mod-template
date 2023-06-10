@@ -52,7 +52,7 @@ def main():
 				sha256 = '*N/A*'
 			else:
 				file_name = '`{}`'.format(os.path.basename(file_paths[0]))
-				sha256 = get_sha256_hash(file_paths[0])
+				sha256 = '`{}`'.format(get_sha256_hash(file_paths[0]))
 			f.write('| {} | {} | {} | {} |\n'.format(subproject, game_versions, file_name, sha256))
 
 

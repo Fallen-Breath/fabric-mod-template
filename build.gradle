@@ -23,16 +23,24 @@ preprocess {
 	def mc119_fabric = createNode('1.19.4-fabric', 1_19_04, 'yarn')
 	def mc120_fabric = createNode('1.20-fabric'  , 1_20_00, 'yarn')
 
+	def mc116_forge  = createNode('1.16.5-forge' , 1_16_05, 'yarn')
+	def mc117_forge  = createNode('1.17.1-forge' , 1_17_01, 'yarn')
+	def mc118_forge  = createNode('1.18.2-forge' , 1_18_02, 'yarn')
 	def mc119_forge  = createNode('1.19.4-forge' , 1_19_04, 'yarn')
+	def mc120_forge  = createNode('1.20-forge'   , 1_20_00, 'yarn')
 
-	mc115_fabric.link(mc114_fabric, null)
+	mc114_fabric.link(mc115_fabric, null)
 	mc115_fabric.link(mc116_fabric, null)
 	mc116_fabric.link(mc117_fabric, null)
 	mc117_fabric.link(mc118_fabric, null)
 	mc118_fabric.link(mc119_fabric, null)
 	mc119_fabric.link(mc120_fabric, null)
 
+	mc116_fabric.link(mc116_forge, null)
+	mc117_fabric.link(mc117_forge, null)
+	mc118_fabric.link(mc118_forge, null)
 	mc119_fabric.link(mc119_forge, null)
+	mc120_fabric.link(mc120_forge, null)
 }
 
 tasks.register('buildAndGather') {

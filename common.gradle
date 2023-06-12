@@ -7,6 +7,7 @@ apply plugin: 'me.fallenbreath.yamlang'
 
 def mod_brand = (loom.platform.get() as String).toLowerCase()
 assert mod_brand in ['fabric', 'forge']
+assert project.name.endsWith('-' + mod_brand)  // optional checking
 
 int mcVersion = 1
 preprocess {
@@ -40,7 +41,7 @@ dependencies {
 	if (mod_brand == 'fabric') {
 		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	} else {
-		forge "net.minecraftforge:forge:${project.forge_version}"
+		forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 	}
 
 	// runtime mods

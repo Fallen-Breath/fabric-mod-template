@@ -32,8 +32,13 @@ def versions = Arrays.asList(
 		"1.17.1-fabric",
 		"1.18.2-fabric",
 		"1.19.4-fabric",
-		"1.19.4-forge",
 		"1.20-fabric",
+
+		"1.16.5-forge",
+		"1.17.1-forge",
+		"1.18.2-forge",
+		"1.19.4-forge",
+		"1.20-forge",
 )
 for (String version : versions) {
 	include(":$version")

@@ -15,22 +15,24 @@ plugins {
 }
 
 preprocess {
-	def mc114      = createNode('1.14.4'      , 1_14_04, 'yarn')
-	def mc115      = createNode('1.15.2'      , 1_15_02, 'yarn')
-	def mc116      = createNode('1.16.5'      , 1_16_05, 'yarn')
-	def mc117      = createNode('1.17.1'      , 1_17_01, 'yarn')
-	def mc118      = createNode('1.18.2'      , 1_18_02, 'yarn')
-	def mc119      = createNode('1.19.4'      , 1_19_04, 'yarn')
-	def mc119f     = createNode('1.19.4-forge', 1_19_04, 'yarn')
-	def mc120      = createNode('1.20'        , 1_20_00, 'yarn')
+	def mc114_fabric = createNode('1.14.4-fabric', 1_14_04, 'yarn')
+	def mc115_fabric = createNode('1.15.2-fabric', 1_15_02, 'yarn')
+	def mc116_fabric = createNode('1.16.5-fabric', 1_16_05, 'yarn')
+	def mc117_fabric = createNode('1.17.1-fabric', 1_17_01, 'yarn')
+	def mc118_fabric = createNode('1.18.2-fabric', 1_18_02, 'yarn')
+	def mc119_fabric = createNode('1.19.4-fabric', 1_19_04, 'yarn')
+	def mc120_fabric = createNode('1.20-fabric'  , 1_20_00, 'yarn')
 
-	mc115.link(mc114, null)
-	mc115.link(mc116, null)
-	mc116.link(mc117, null)
-	mc117.link(mc118, null)
-	mc118.link(mc119, null)
-	mc119.link(mc119f, null)
-	mc119.link(mc120, null)
+	def mc119_forge  = createNode('1.19.4-forge' , 1_19_04, 'yarn')
+
+	mc115_fabric.link(mc114_fabric, null)
+	mc115_fabric.link(mc116_fabric, null)
+	mc116_fabric.link(mc117_fabric, null)
+	mc117_fabric.link(mc118_fabric, null)
+	mc118_fabric.link(mc119_fabric, null)
+	mc119_fabric.link(mc120_fabric, null)
+
+	mc119_fabric.link(mc119_forge, null)
 }
 
 tasks.register('buildAndGather') {

@@ -6,14 +6,15 @@ apply plugin: 'com.replaymod.preprocess'
 apply plugin: 'me.fallenbreath.yamlang'
 
 int mcVersion = 1
+def mod_brand = loom.platform
 
 preprocess {
 	mcVersion = vars.get()["MC"] as int
 	tabIndentation = true
 
 	vars.put("MC", mcVersion)
-	vars.put("FABRIC", project.brand == 'fabric' ? 1 : 0)
-	vars.put("FORGE", project.brand == 'forge' ? 1 : 0)
+	vars.put("FABRIC", mod_brand == 'fabric' ? 1 : 0)
+	vars.put("FORGE", mod_brand == 'forge' ? 1 : 0)
 }
 
 repositories {
@@ -35,7 +36,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 
-	if (project.brand == 'fabric') {
+	if (mod_brand == 'fabric') {
 		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	} else {
 		forge "net.minecraftforge:forge:${project.forge_version}"
@@ -55,7 +56,7 @@ loom {
 		vmArgs '-Dmixin.debug.export=true'
 	}
 
-	if (project.brand == 'forge') {
+	if (mod_brand == 'forge') {
 		forge {
 			mixinConfigs = ["template_mod.mixins.json"]
 			dataGen {
@@ -93,12 +94,12 @@ String fullModVersion = project.mod_version + versionSuffix
 
 version = 'v' + fullModVersion
 group = project.maven_group
-archivesBaseName = project.archives_base_name + '-' + project.brand + '-mc' + project.minecraft_version
+archivesBaseName = project.archives_base_name + '-' + mod_brand + '-mc' + project.minecraft_version
 
 processResources {
 	inputs.property "version", fullModVersion
 
-	filesMatching(project.brand == 'fabric' ? "fabric.mod.json" : "META-INF/mods.toml") {
+	filesMatching(mod_brand == 'fabric' ? "fabric.mod.json" : "META-INF/mods.toml") {
 		def valueMap = [
 				"id": project.mod_id,
 				"name": project.mod_name,
@@ -118,7 +119,7 @@ yamlang {
 // ensure that the encoding is set to UTF-8, no matter what the system default is
 // this fixes some edge cases with special characters not displaying correctly
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	options.encoding = "UTF-8"
 }
 

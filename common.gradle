@@ -5,9 +5,10 @@ apply plugin: 'io.github.juuxel.loom-quiltflower'
 apply plugin: 'com.replaymod.preprocess'
 apply plugin: 'me.fallenbreath.yamlang'
 
-int mcVersion = 1
-def mod_brand = loom.platform
+def mod_brand = (loom.platform.get() as String).toLowerCase()
+assert mod_brand in ['fabric', 'forge']
 
+int mcVersion = 1
 preprocess {
 	mcVersion = vars.get()["MC"] as int
 	tabIndentation = true
@@ -59,9 +60,6 @@ loom {
 	if (mod_brand == 'forge') {
 		forge {
 			mixinConfigs = ["template_mod.mixins.json"]
-			dataGen {
-				mod project.mod_id
-			}
 		}
 	}
 }
@@ -73,12 +71,10 @@ remapJar {
 if (mcVersion >= 11800) {
 	sourceCompatibility = JavaVersion.VERSION_17
 	targetCompatibility = JavaVersion.VERSION_17
-}
-else if (mcVersion >= 11700) {
+} else if (mcVersion >= 11700) {
 	sourceCompatibility = JavaVersion.VERSION_16
 	targetCompatibility = JavaVersion.VERSION_16
-}
-else {
+} else {
 	sourceCompatibility = JavaVersion.VERSION_1_8
 	targetCompatibility = JavaVersion.VERSION_1_8
 }
@@ -99,14 +95,25 @@ archivesBaseName = project.archives_base_name + '-' + mod_brand + '-mc' + projec
 processResources {
 	inputs.property "version", fullModVersion
 
-	filesMatching(mod_brand == 'fabric' ? "fabric.mod.json" : "META-INF/mods.toml") {
-		def valueMap = [
-				"id": project.mod_id,
-				"name": project.mod_name,
-				"version": fullModVersion,
-				"minecraft_dependency": project.minecraft_dependency,
-		]
-		expand valueMap
+	[
+			'fabric': ['fabric.mod.json'],
+			'forge': ['META-INF/mods.toml', 'pack.mcmeta'],
+	].forEach { brand, files ->
+		files.forEach {
+			if (brand == mod_brand) {
+				filesMatching(it) {
+					def valueMap = [
+							"id": project.mod_id,
+							"name": project.mod_name,
+							"version": fullModVersion,
+							"minecraft_dependency": project.minecraft_dependency,
+					]
+					expand valueMap
+				}
+			} else {
+				exclude it
+			}
+		}
 	}
 }
 
@@ -132,7 +139,7 @@ java {
 
 jar {
 	from(rootProject.file('LICENSE')) {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${project.archivesBaseName}" }
 	}
 }
 

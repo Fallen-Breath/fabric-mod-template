@@ -20,11 +20,13 @@
 
 package me.fallenbreath.template_mod;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+//#if FABRIC == 1
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class TemplateMod implements ModInitializer
 {
@@ -40,5 +42,30 @@ public class TemplateMod implements ModInitializer
 		ModMetadata metadata = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(RuntimeException::new).getMetadata();
 		MOD_NAME = metadata.getName();
 		MOD_VERSION = metadata.getVersion().getFriendlyString();
+
+		LOGGER.info("Hello {} v{} from fabric!", MOD_NAME, MOD_VERSION);
 	}
 }
+//#elseif FORGE == 1
+//$$ import net.minecraftforge.fml.ModList;
+//$$ import net.minecraftforge.fml.common.Mod;
+//$$ import net.minecraftforge.forgespi.language.IModInfo;
+//$$
+//$$ @Mod(TemplateMod.MOD_ID)
+//$$ public class TemplateMod
+//$$ {
+//$$ 	public static final Logger LOGGER = LogManager.getLogger();
+//$$
+//$$ 	public static final String MOD_ID = "template_mod";
+//$$ 	public static String MOD_VERSION = "unknown";
+//$$ 	public static String MOD_NAME = "unknown";
+//$$
+//$$ 	public TemplateMod()
+//$$ 	{
+//$$ 		IModInfo modInfo = ModList.get().getModContainerById(MOD_ID).orElseThrow(RuntimeException::new).getModInfo();
+//$$ 		MOD_NAME = modInfo.getDisplayName();
+//$$ 		MOD_VERSION = modInfo.getVersion().toString();
+//$$ 		LOGGER.info("Hello {} v{} from forge!", MOD_NAME, MOD_VERSION);
+//$$ 	}
+//$$ }
+//#endif

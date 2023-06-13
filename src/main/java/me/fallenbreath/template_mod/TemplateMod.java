@@ -23,7 +23,7 @@ package me.fallenbreath.template_mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-//#if FABRIC == 1
+//#if FABRIC
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -46,7 +46,7 @@ public class TemplateMod implements ModInitializer
 		LOGGER.info("Hello {} v{} from fabric!", MOD_NAME, MOD_VERSION);
 	}
 }
-//#elseif FORGE == 1
+//#elseif FORGE
 //$$ import net.minecraftforge.fml.ModList;
 //$$ import net.minecraftforge.fml.common.Mod;
 //$$ import net.minecraftforge.forgespi.language.IModInfo;

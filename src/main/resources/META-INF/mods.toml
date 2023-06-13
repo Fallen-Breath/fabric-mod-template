@@ -12,14 +12,14 @@ description = '''
 '''
 logoFile = "assets/template_mod/icon.png"
 
-[[dependencies.${id}]]
+[[dependencies."${id}"]]
 modId = "forge"
 mandatory = true
 versionRange = "[36,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.${id}]]
+[[dependencies."${id}"]]
 modId = "minecraft"
 mandatory = true
 versionRange = "${minecraft_dependency}"

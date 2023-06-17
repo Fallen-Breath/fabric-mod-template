@@ -158,7 +158,7 @@ jobs:
             - SHA-256: `${{ steps.file_info.outputs.hash }}`
             - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-          loaders: fabric
+          loaders: ${{ matrix.mod_brand }}
           game-versions: ${{ steps.game_versions.outputs.value }}
           version-resolver: exact
 

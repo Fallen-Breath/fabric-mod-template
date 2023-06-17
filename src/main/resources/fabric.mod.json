@@ -4,13 +4,13 @@
   "version": "${version}",
 
   "name": "${name}",
-  "description": "",
+  "description": "Template for my fabric mods",
   "authors": [
     "Fallen_Breath"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/",
-    "sources": "https://github.com/"
+    "sources": "https://github.com/Fallen-Breath/fabric-mod-template"
   },
 
   "icon": "assets/template_mod/icon.png",

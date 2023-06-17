@@ -11,7 +11,9 @@ import sys
 
 def main():
 	target_subproject_env = os.environ.get('TARGET_SUBPROJECT', '')
-	target_subprojects = set(target_subproject_env.split(',')) if target_subproject_env != '' else set()
+	target_subprojects = set(filter(None, target_subproject_env.split(',') if target_subproject_env != '' else []))
+	print('target_subprojects: {}'.format(target_subprojects))
+
 	with open('settings.json') as f:
 		settings: dict = json.load(f)
 
@@ -35,6 +37,9 @@ def main():
 	matrix = {'include': matrix_entries}
 	with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
 		f.write('matrix={}\n'.format(json.dumps(matrix)))
+
+	print('matrix:')
+	print(json.dumps(matrix, indent=2))
 
 
 if __name__ == '__main__':

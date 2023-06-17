@@ -27,7 +27,7 @@ jobs:
           echo target_release_tag = ${{ github.event.inputs.target_release_tag }}
 
       - id: setmatrix
-        run: python3 .github/workflows/scripts/summary.py  # ubuntu-22.04 uses Python 3.10.6
+        run: python3 .github/workflows/scripts/matrix.py  # ubuntu-22.04 uses Python 3.10.6
         env:
           TARGET_SUBPROJECT: ${{ inputs.target_subproject }}
 

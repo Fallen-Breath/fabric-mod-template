@@ -10,14 +10,13 @@ import sys
 
 
 def main():
-	target_subproject = os.environ.get('TARGET_SUBPROJECT')
+	subprojects = list(filter(None, os.environ.get('TARGET_SUBPROJECT', '').split(',')))
 	with open('settings.json') as f:
 		settings: dict = json.load(f)
 
-	if target_subproject is None:
+	if len(subprojects) == 0:
 		subprojects = settings['versions']
 	else:
-		subprojects = list(filter(None, target_subproject.split(',')))
 		for subproject in subprojects:
 			if subproject not in settings['versions']:
 				print('Unexpected input subproject {}'.format(subproject), file=sys.stderr)

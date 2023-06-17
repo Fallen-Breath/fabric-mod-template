@@ -7,7 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       target_subproject:
-        description: The subproject name of the specified Minecraft version to be released, seperated with ",". By default all subprojects will be released
+        description: |-
+          The subproject name(s) of the specified Minecraft version to be released, seperated with ",".
+          By default all subprojects will be released
         type: string
         required: false
         default: ''

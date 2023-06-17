@@ -30,7 +30,7 @@ def get_sha256_hash(file_path: str) -> str:
 
 
 def main():
-	target_subproject = os.environ.get('TARGET_SUBPROJECT', '')
+	target_subprojects = os.environ.get('TARGET_SUBPROJECT', '').split(',')
 	with open('settings.json') as f:
 		settings: dict = json.load(f)
 
@@ -41,7 +41,7 @@ def main():
 
 		warnings = []
 		for subproject in settings['versions']:
-			if target_subproject != '' and subproject != target_subproject:
+			if len(target_subprojects) > 0 and subproject not in target_subprojects:
 				continue
 			game_versions = read_prop('versions/{}/gradle.properties'.format(subproject), 'game_versions')
 			game_versions = game_versions.strip().replace('\\n', ', ')

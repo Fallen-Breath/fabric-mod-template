@@ -10,17 +10,21 @@ import sys
 
 
 def main():
-	subprojects = list(os.environ.get('TARGET_SUBPROJECT', '').split(','))
+	target_subprojects = set(os.environ.get('TARGET_SUBPROJECT', '').split(','))
 	with open('settings.json') as f:
 		settings: dict = json.load(f)
 
-	if len(subprojects) == 0:
+	if len(target_subprojects) == 0:
 		subprojects = settings['versions']
 	else:
-		for subproject in subprojects:
-			if subproject not in settings['versions']:
-				print('Unexpected input subproject {}'.format(subproject), file=sys.stderr)
-				sys.exit(1)
+		subprojects = []
+		for subproject in settings['versions']:
+			if subproject in target_subprojects:
+				subprojects.append(subproject)
+				target_subprojects.remove(subproject)
+		if len(target_subprojects) > 0:
+			print('Unexpected subprojects: {}'.format(target_subprojects), file=sys.stderr)
+			sys.exit(1)
 
 	items = [{'subproject': subproject} for subproject in subprojects]
 	result = {'include': items}

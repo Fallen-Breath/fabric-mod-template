@@ -10,7 +10,7 @@ import sys
 
 
 def main():
-	subprojects = list(filter(None, os.environ.get('TARGET_SUBPROJECT', '').split(',')))
+	subprojects = list(os.environ.get('TARGET_SUBPROJECT', '').split(','))
 	with open('settings.json') as f:
 		settings: dict = json.load(f)
 

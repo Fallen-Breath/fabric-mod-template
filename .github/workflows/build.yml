@@ -36,16 +36,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Get subproject name to build
-        id: subproject_info
-        run: |
-          if [ "${{ inputs.target_subproject }}" != "" ]
-          then
-              echo "prefix=${{ inputs.target_subproject }}:" >> $GITHUB_OUTPUT
-          else
-              echo "prefix=" >> $GITHUB_OUTPUT
-          fi
-
       - name: Build with Gradle
         run: |
           chmod +x gradlew
@@ -53,7 +43,7 @@ jobs:
               echo "Building all subprojects"
               ./gradlew build --no-daemon
           else
-              args=$(echo "${{ inputs.target_subproject }}" | tr ',' '\n' | sed 's/$/:build/' | paste -d ' ')
+              args=$(echo "${{ inputs.target_subproject }}" | tr ',' '\n' | sed 's/$/:build/' | paste -sd ' ')
               echo "Building $args"
               ./gradlew $args --no-daemon
           fi

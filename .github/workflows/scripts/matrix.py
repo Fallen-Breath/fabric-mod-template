@@ -10,7 +10,8 @@ import sys
 
 
 def main():
-	target_subprojects = set(os.environ.get('TARGET_SUBPROJECT', '').split(','))
+	target_subproject_env = os.environ.get('TARGET_SUBPROJECT', '')
+	target_subprojects = set(target_subproject_env.split(',')) if target_subproject_env != '' else set()
 	with open('settings.json') as f:
 		settings: dict = json.load(f)
 

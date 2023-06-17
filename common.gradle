@@ -45,7 +45,7 @@ dependencies {
 	}
 
 	// runtime mods
-//	if (mcVersion < 11904) {
+//	if (mcVersion < 11904 && mod_brand == 'fabric') {
 //		modRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
 //	}
 }

@@ -7,6 +7,7 @@
   {"subproject_dir": "1.19.4-fabric"},
   {"subproject_dir": "1.20-fabric"},
 
+  {"subproject_dir": "1.15.2-forge"},
   {"subproject_dir": "1.16.5-forge"},
   {"subproject_dir": "1.17.1-forge"},
   {"subproject_dir": "1.18.2-forge"},

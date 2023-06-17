@@ -1,23 +1,17 @@
 modLoader = "javafml"
-loaderVersion = "[36,)"
+loaderVersion = "[31,)"
 license = "LGPLv3"
 
 [[mods]]
 modId = "${id}"
 version = "${version}"
 displayName = "${name}"
+displayURL = "https://github.com/Fallen-Breath/fabric-mod-template"
 authors = "Fallen_Breath"
 description = '''
-
+Template for my fabric mods
 '''
-logoFile = "assets/template_mod/icon.png"
-
-[[dependencies."${id}"]]
-modId = "forge"
-mandatory = true
-versionRange = "[36,)"
-ordering = "NONE"
-side = "BOTH"
+logoFile = "icon.png"
 
 [[dependencies."${id}"]]
 modId = "minecraft"

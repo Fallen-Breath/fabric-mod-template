@@ -34,6 +34,7 @@ def versions = Arrays.asList(
 		"1.19.4-fabric",
 		"1.20-fabric",
 
+		"1.15.2-forge",
 		"1.16.5-forge",
 		"1.17.1-forge",
 		"1.18.2-forge",

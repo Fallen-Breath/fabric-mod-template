@@ -59,6 +59,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Display context
+        run: |
+          echo ref_name = ${{ github.ref_name }}
+          echo target_subproject = ${{ github.event.inputs.target_subproject }}
+          echo target_release_tag = ${{ github.event.inputs.target_release_tag }}
+
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:

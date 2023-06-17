@@ -27,10 +27,14 @@ def main():
 			print('Unexpected subprojects: {}'.format(target_subprojects), file=sys.stderr)
 			sys.exit(1)
 
-	items = [{'subproject': subproject} for subproject in subprojects]
-	result = {'include': items}
+	matrix_entries = []
+	for subproject in subprojects:
+		matrix_entries.append({
+			'subproject': subproject,
+		})
+	matrix = {'include': matrix_entries}
 	with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
-		f.write('matrix={}\n'.format(json.dumps(result)))
+		f.write('matrix={}\n'.format(json.dumps(matrix)))
 
 
 if __name__ == '__main__':

@@ -118,7 +118,7 @@ java {
 
 jar {
 	from(rootProject.file('LICENSE')) {
-		rename { "${it}_${project.archives_base_name}"}
+		rename { "${it}_${project.archives_base_name}" }
 	}
 }
 

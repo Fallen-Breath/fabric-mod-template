@@ -146,6 +146,7 @@ jobs:
 
           github-tag: ${{ steps.release_info.outputs.tag_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-generate-changelog: false
 
           files: ${{ steps.file_info.outputs.path }}
 

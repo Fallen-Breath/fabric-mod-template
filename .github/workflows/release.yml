@@ -139,10 +139,10 @@ jobs:
         uses: Kir-Antipov/mc-publish@v3.3
         with:
 #          modrinth-id: fo0Bar
-          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
+#          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
 
 #          curseforge-id: 314159
-          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+#          curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
           github-tag: ${{ steps.release_info.outputs.tag_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}

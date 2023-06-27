@@ -136,7 +136,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Publish Minecraft Mods
-        uses: Kir-Antipov/mc-publish@v3.3
+        uses: Fallen-Breath/mc-publish@v3.3.0-fallen.1
         with:
 #          modrinth-id: fo0Bar
 #          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
@@ -146,7 +146,7 @@ jobs:
 
           github-tag: ${{ steps.release_info.outputs.tag_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-generate-changelog: false
+          github-update-release-body: false
 
           files: ${{ steps.file_info.outputs.path }}
 

@@ -135,25 +135,14 @@ jobs:
           echo "hash=$FILE_HASH" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
 
-      - name: Publish Minecraft Mods
-        uses: Fallen-Breath/mc-publish@v3.3.0-fallen.1
+      - name: Prepare changelog
+        uses: actions/github-script@v6
+        id: changelog
         with:
-#          modrinth-id: fo0Bar
-#          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
-
-#          curseforge-id: 314159
-#          curseforge-token: ${{ secrets.CF_API_TOKEN }}
-
-          github-tag: ${{ steps.release_info.outputs.tag_name }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-update-release-body: false
-
-          files: ${{ steps.file_info.outputs.path }}
-
-          name: ${{ format('{0} v{1} for mc{2}', steps.properties_g.outputs.mod_name, steps.properties_g.outputs.mod_version, steps.properties_v.outputs.minecraft_version) }}
-          version: ${{ format('mc{0}-v{1}', steps.properties_v.outputs.minecraft_version, steps.properties_g.outputs.mod_version) }}
-          version-type: release
-          changelog: |-
+          script: return process.env.CHANGELOG
+          result-encoding: string
+        env:
+          CHANGELOG: |-
             ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
             
             -------
@@ -164,6 +153,25 @@ jobs:
             - SHA-256: `${{ steps.file_info.outputs.hash }}`
             - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
+      - name: Publish Minecraft Mods
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+#          modrinth-id: fo0Bar
+#          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
+
+#          curseforge-id: 314159
+#          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+
+          github-tag: ${{ steps.release_info.outputs.tag_name }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          files: ${{ steps.file_info.outputs.path }}
+
+          name: ${{ format('{0} v{1} for mc{2}', steps.properties_g.outputs.mod_name, steps.properties_g.outputs.mod_version, steps.properties_v.outputs.minecraft_version) }}
+          version: ${{ format('mc{0}-v{1}', steps.properties_v.outputs.minecraft_version, steps.properties_g.outputs.mod_version) }}
+          version-type: release
+          modrinth-changelog: ${{ steps.changelog.outputs.result }}
+          curseforge-changelog: ${{ steps.changelog.outputs.result }}
           loaders: fabric
           game-versions: ${{ steps.game_versions.outputs.value }}
           game-version-filter: any

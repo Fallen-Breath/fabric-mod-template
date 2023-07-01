@@ -171,11 +171,14 @@ jobs:
           name: ${{ format('{0} v{1} for mc{2}', steps.properties_g.outputs.mod_name, steps.properties_g.outputs.mod_version, steps.properties_v.outputs.minecraft_version) }}
           version: ${{ format('mc{0}-v{1}', steps.properties_v.outputs.minecraft_version, steps.properties_g.outputs.mod_version) }}
           version-type: release
-          modrinth-changelog: ${{ steps.changelog.outputs.result }}
-          curseforge-changelog: ${{ steps.changelog.outputs.result }}
+
           loaders: fabric
           game-versions: ${{ steps.game_versions.outputs.value }}
           game-version-filter: any
+          dependencies: ''  # declare the dependencies explicitly, so mc-publish won't try to load from fabric.mod.json
+
+          modrinth-changelog: ${{ steps.changelog.outputs.result }}
+          curseforge-changelog: ${{ steps.changelog.outputs.result }}
 
           retry-attempts: 3
           retry-delay: 10000

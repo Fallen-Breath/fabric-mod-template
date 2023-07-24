@@ -39,7 +39,7 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 
 	if (mod_brand == 'fabric') {
-		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+		modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 	} else {
 		forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 	}

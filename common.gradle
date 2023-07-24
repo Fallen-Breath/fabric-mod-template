@@ -9,7 +9,7 @@ def mod_brand = (loom.platform.get() as String).toLowerCase()
 assert mod_brand in ['fabric', 'forge']
 assert project.name.endsWith('-' + mod_brand)  // optional check
 
-int mcVersion
+int mcVersion = 1
 preprocess {
 	mcVersion = vars.get()["MC"] as int
 	tabIndentation = true

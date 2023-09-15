@@ -179,15 +179,15 @@ publishing {
 	repositories {
 		// mavenLocal()
 
-		// maven {
-		// 	url = version.endsWith("SNAPSHOT") ? "https://maven.fallenbreath.me/snapshots" : "https://maven.fallenbreath.me/releases"
-		// 	credentials(PasswordCredentials) {
-		// 		username = 'fallen'
-		// 		password = System.getenv("FALLENS_MAVEN_TOKEN")
-		// 	}
-		// 	authentication {
-		// 		basic(BasicAuthentication)
-		// 	}
-		// }
+//		maven {
+//			url = version.endsWith("SNAPSHOT") ? "https://maven.fallenbreath.me/snapshots" : "https://maven.fallenbreath.me/releases"
+//			credentials(PasswordCredentials) {
+//				username = 'fallen'
+//				password = System.getenv("FALLENS_MAVEN_TOKEN")
+//			}
+//			authentication {
+//				basic(BasicAuthentication)
+//			}
+//		}
 	}
 }

@@ -15,6 +15,9 @@ repositories {
 	maven {
 		url 'https://jitpack.io'
 	}
+	maven {
+		url 'https://maven.fallenbreath.me/releases'
+	}
 }
 
 // https://github.com/FabricMC/fabric-loader/issues/783
@@ -29,6 +32,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// runtime mods
+//	modRuntimeOnly 'me.fallenbreath:mixin-auditor:0.1.0'
 //	if (mcVersion < 11904) {
 //		modRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
 //	}
@@ -55,6 +59,13 @@ loom {
 		runDir '../../run'
 		vmArgs '-Dmixin.debug.export=true'
 	}
+//	runs {
+//		serverMixinAudit {
+//			server()
+//			vmArgs '-DmixinAuditor.audit=true'
+//			ideConfigGenerated false
+//		}
+//	}
 }
 
 remapJar {

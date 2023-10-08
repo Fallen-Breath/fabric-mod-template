@@ -12,11 +12,12 @@ on:
         type: string
         required: false
         default: ''
-      mixin_audit:
-        description: run mixin audit for Minecraft server after build
-        type: boolean
-        required: false
-        default: false
+#      # [FEATURE] MIXIN_AUDITOR
+#      mixin_audit:
+#        description: run mixin audit for Minecraft server after build
+#        type: boolean
+#        required: false
+#        default: false
 
 jobs:
   build:
@@ -56,7 +57,8 @@ jobs:
           BUILD_ID: ${{ github.run_number }}
           BUILD_RELEASE: ${{ inputs.release }}
 
-#      - name: Run Mixin Audit Check
+#      # [FEATURE] MIXIN_AUDITOR
+#      - name: Run mixin audit check for Minecraft server
 #        if: ${{ inputs.mixin_audit }}
 #        timeout-minutes: 10
 #        run: |
@@ -71,6 +73,7 @@ jobs:
           name: build-artifacts
           path: versions/*/build/libs/
 
+#      # [FEATURE] FALLENS_MAVEN
 #      - name: Publish with gradle
 #        run: |
 #          if [ -z "${{ inputs.target_subproject }}" ]; then

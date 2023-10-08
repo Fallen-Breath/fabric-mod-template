@@ -32,10 +32,11 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// runtime mods
-//	modRuntimeOnly 'me.fallenbreath:mixin-auditor:0.1.0'
 //	if (mcVersion < 11904) {
 //		modRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
 //	}
+//	// [FEATURE] MIXIN_AUDITOR
+//	modRuntimeOnly 'me.fallenbreath:mixin-auditor:0.1.0'
 
 	// dependencies
 //	include(modImplementation(fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)))
@@ -59,6 +60,7 @@ loom {
 		runDir '../../run'
 		vmArgs '-Dmixin.debug.export=true'
 	}
+//	// [FEATURE] MIXIN_AUDITOR
 //	runs {
 //		serverMixinAudit {
 //			server()
@@ -187,6 +189,7 @@ publishing {
 	repositories {
 		// mavenLocal()
 
+//		// [FEATURE] FALLENS_MAVEN
 //		maven {
 //			url = version.endsWith("SNAPSHOT") ? "https://maven.fallenbreath.me/snapshots" : "https://maven.fallenbreath.me/releases"
 //			credentials(PasswordCredentials) {

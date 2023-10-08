@@ -15,9 +15,6 @@ repositories {
 	maven {
 		url 'https://jitpack.io'
 	}
-	maven {
-		url 'https://www.cursemaven.com'
-	}
 }
 
 // https://github.com/FabricMC/fabric-loader/issues/783

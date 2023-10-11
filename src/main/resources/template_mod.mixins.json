@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "me.fallenbreath.template_mod.mixins",
-  "compatibilityLevel": "${compatibility_level}",
+  "compatibilityLevel": "{{COMPATIBILITY_LEVEL}}",
   "mixins": [
     "MinecraftServerMixin"
   ],

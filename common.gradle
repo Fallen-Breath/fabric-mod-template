@@ -74,9 +74,6 @@ remapJar {
 	remapperIsolation = true
 }
 
-sourceCompatibility = JAVA_COMPATIBILITY
-targetCompatibility = JAVA_COMPATIBILITY
-
 String versionSuffix = ''
 // detect github action environment variables
 // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
@@ -88,7 +85,7 @@ String fullModVersion = project.mod_version + versionSuffix
 
 version = 'v' + fullModVersion
 group = project.maven_group
-archivesBaseName = project.archives_base_name + '-mc' + project.minecraft_version
+base.archivesName = project.archives_base_name + '-mc' + project.minecraft_version
 
 // See https://youtrack.jetbrains.com/issue/IDEA-296490
 // if IDEA complains about "Cannot resolve resource filtering of MatchingCopyAction" and you want to know why
@@ -128,6 +125,9 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
+	sourceCompatibility = JAVA_COMPATIBILITY
+	targetCompatibility = JAVA_COMPATIBILITY
+
 	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
 	// if it is present.
 	// If you remove this line, sources will not be generated.
@@ -179,7 +179,7 @@ testClasses.dependsOn licenseFormatTest
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			artifactId archivesBaseName
+			artifactId base.archivesName.get()
 
 			from components.java
 		}

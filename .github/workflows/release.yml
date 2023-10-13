@@ -38,6 +38,7 @@ jobs:
 
   build:
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       target_subproject: ${{ github.event.inputs.target_subproject }}
       release: true
@@ -157,9 +158,11 @@ jobs:
       - name: Publish Minecraft Mods
         uses: Kir-Antipov/mc-publish@v3.3
         with:
+          # https://modrinth.com/settings/pats
 #          modrinth-id: fo0Bar
 #          modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
 
+          # https://legacy.curseforge.com/account/api-tokens
 #          curseforge-id: 314159
 #          curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
@@ -177,6 +180,7 @@ jobs:
           game-version-filter: any
           dependencies: ''  # declare the dependencies explicitly, so mc-publish won't try to load from fabric.mod.json
 
+          github-changelog: ${{ format('{0}{1}', github.event.release.body, steps.get_release.outputs.body) }}
           modrinth-changelog: ${{ steps.changelog.outputs.result }}
           curseforge-changelog: ${{ steps.changelog.outputs.result }}
 

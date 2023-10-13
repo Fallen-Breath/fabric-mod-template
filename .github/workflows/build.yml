@@ -64,8 +64,7 @@ jobs:
 #        run: |
 #          mkdir -p ./run
 #          echo eula=true > ./run/eula.txt
-#          export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -DmixinAuditor.audit=true"
-#          ./gradlew runServer
+#          ./gradlew runServerMixinAudit
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

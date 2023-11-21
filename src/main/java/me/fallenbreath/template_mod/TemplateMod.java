@@ -23,12 +23,23 @@ package me.fallenbreath.template_mod;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+
+//#if MC >= 11800
+//$$ import com.mojang.logging.LogUtils;
+//$$ import org.slf4j.Logger;
+//#else
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+//#endif
 
 public class TemplateMod implements ModInitializer
 {
-	public static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER =
+			//#if MC >= 11800
+			//$$ LogUtils.getLogger();
+			//#else
+			LogManager.getLogger();
+			//#endif
 
 	public static final String MOD_ID = "template_mod";
 	public static String MOD_VERSION = "unknown";

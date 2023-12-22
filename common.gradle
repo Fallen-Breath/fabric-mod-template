@@ -97,10 +97,10 @@ String fullModVersion = project.mod_version + versionSuffix
 group = project.maven_group
 if (System.getenv("JITPACK") == "true") {
 	// move mc version into archivesBaseName, so jitpack will be able to organize archives from multiple subprojects correctly
-    base.archivesName = project.archives_base_name + '-mc' + project.minecraft_version + '-' + mod_brand
+	base.archivesName = project.archives_base_name + '-mc' + project.minecraft_version + '-' + mod_brand
 	version = 'v' + fullModVersion
 } else {
-    base.archivesName = project.archives_base_name
+	base.archivesName = project.archives_base_name
 	version = 'mc' + project.minecraft_version + '-' + mod_brand + '-v' + fullModVersion
 }
 
@@ -137,10 +137,10 @@ processResources {
 		filter { s -> s.replace('{{COMPATIBILITY_LEVEL}}', "JAVA_${JAVA_COMPATIBILITY.ordinal() + 1}") }
 	}
 
-    if (mod_brand == 'forge') {
-        // forge requires the mod icon file to be at the resource root
-        filesMatching(MOD_ICON_PATH) { f -> f.path = new File(f.path).getName() }
-    }
+	if (mod_brand == 'forge') {
+		// forge requires the mod icon file to be at the resource root
+		filesMatching(MOD_ICON_PATH) { f -> f.path = new File(f.path).getName() }
+	}
 }
 
 // https://github.com/Fallen-Breath/yamlang

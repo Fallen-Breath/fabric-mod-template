@@ -58,7 +58,7 @@ tasks.register('buildAndGather') {
 			copy {
 				from(buildLibs(project)) {
 					include '*.jar'
-					exclude '*-dev.jar', '*-sources.jar'
+					exclude '*-dev.jar', '*-sources.jar', '*-shadow.jar'
 				}
 				into buildLibs(rootProject)
 				duplicatesStrategy DuplicatesStrategy.INCLUDE

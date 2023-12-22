@@ -20,8 +20,13 @@
 
 package me.fallenbreath.template_mod;
 
+//#if MC >= 11800
+//$$ import com.mojang.logging.LogUtils;
+//$$ import org.slf4j.Logger;
+//#else
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+//#endif
 
 //#if FABRIC
 import net.fabricmc.api.ModInitializer;
@@ -30,7 +35,12 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 
 public class TemplateMod implements ModInitializer
 {
-	public static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER =
+			//#if MC >= 11800
+			//$$ LogUtils.getLogger();
+			//#else
+			LogManager.getLogger();
+			//#endif
 
 	public static final String MOD_ID = "template_mod";
 	public static String MOD_VERSION = "unknown";
@@ -54,8 +64,12 @@ public class TemplateMod implements ModInitializer
 //$$ @Mod(TemplateMod.MOD_ID)
 //$$ public class TemplateMod
 //$$ {
-//$$ 	public static final Logger LOGGER = LogManager.getLogger();
-//$$
+//$$ 	public static final Logger LOGGER =
+//$$ 			//#if MC >= 11800
+//$$ 			//$$ LogUtils.getLogger();
+//$$ 			//#else
+//$$ 			LogManager.getLogger();
+//$$ 			//#endif
 //$$ 	public static final String MOD_ID = "template_mod";
 //$$ 	public static String MOD_VERSION = "unknown";
 //$$ 	public static String MOD_NAME = "unknown";

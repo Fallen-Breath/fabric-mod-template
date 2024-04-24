@@ -1,5 +1,11 @@
 name: Release
 
+# release: <default> (release title)
+# dispatch (all): Manual release for $target_release_tag
+# dispatch (specified): Manual release for $target_release_tag (subproject: $target_subproject)
+run-name: |-
+  ${{ github.event_name == 'workflow_dispatch' && format('Manual release for {0}{1}', inputs.target_release_tag, inputs.target_subproject && format(' (subproject: {0})', inputs.target_subproject) || '') || '' }}
+
 on:
   release:
     types:
@@ -36,9 +42,23 @@ jobs:
     with:
       target_subproject: ${{ github.event.inputs.target_subproject }}
 
+  # ensure the input release tag is valid
+  validate_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get github release information
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: cardinalby/git-get-release-action@1.2.4
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag: ${{ github.event.inputs.target_release_tag }}
+
   build:
     uses: ./.github/workflows/build.yml
     secrets: inherit
+    needs:
+      - validate_release
     with:
       target_subproject: ${{ github.event.inputs.target_subproject }}
       release: true
@@ -58,7 +78,7 @@ jobs:
       matrix: ${{ fromJson(needs.matrix_prep.outputs.matrix) }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Display context
         run: |
@@ -67,7 +87,7 @@ jobs:
           echo target_release_tag = ${{ github.event.inputs.target_release_tag }}
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifacts
           path: build-artifacts
@@ -138,7 +158,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Prepare changelog
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         id: changelog
         with:
           script: return process.env.CHANGELOG

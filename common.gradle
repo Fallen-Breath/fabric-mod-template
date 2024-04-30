@@ -49,8 +49,8 @@ dependencies {
 //	}
 
 	// dependencies
-	include(modImplementation("me.fallenbreath:conditional-mixin-${mod_brand}:${project.conditionalmixin_version}"))
-	include(annotationProcessor(implementation("io.github.llamalad7:mixinextras-${mod_brand}:${project.mixinextras_version}")))
+//	include(modImplementation("me.fallenbreath:conditional-mixin-${mod_brand}:${project.conditionalmixin_version}"))
+//	include(annotationProcessor(implementation("io.github.llamalad7:mixinextras-${mod_brand}:${project.mixinextras_version}")))
 }
 
 String MOD_ICON_PATH = 'assets/template_mod/icon.png'

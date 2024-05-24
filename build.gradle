@@ -18,14 +18,14 @@ preprocess {
 	def mc117_fabric = createNode('1.17.1-fabric', 1_17_01, '')
 	def mc118_fabric = createNode('1.18.2-fabric', 1_18_02, '')
 	def mc119_fabric = createNode('1.19.4-fabric', 1_19_04, '')
-	def mc120_fabric = createNode('1.20.4-fabric', 1_20_04, '')
+	def mc120_fabric = createNode('1.20.6-fabric', 1_20_06, '')
 
 	def mc115_forge  = createNode('1.15.2-forge' , 1_15_02, '')
 	def mc116_forge  = createNode('1.16.5-forge' , 1_16_05, '')
 	def mc117_forge  = createNode('1.17.1-forge' , 1_17_01, '')
 	def mc118_forge  = createNode('1.18.2-forge' , 1_18_02, '')
 	def mc119_forge  = createNode('1.19.4-forge' , 1_19_04, '')
-	def mc120_forge  = createNode('1.20.4-forge' , 1_20_04, '')
+	def mc120_forge  = createNode('1.20.6-forge' , 1_20_06, '')
 
 	mc114_fabric.link(mc115_fabric, null)
 	mc115_fabric.link(mc116_fabric, null)

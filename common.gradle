@@ -5,7 +5,7 @@ apply plugin: 'com.replaymod.preprocess'
 apply plugin: 'me.fallenbreath.yamlang'
 
 def mod_brand = (loom.platform.get() as String).toLowerCase()
-assert mod_brand in ['fabric', 'forge']
+assert mod_brand in ['fabric', 'forge', 'neoforge']
 assert project.name.endsWith('-' + mod_brand)  // optional check
 
 int mcVersion = 1
@@ -16,6 +16,8 @@ preprocess {
 	vars.put("MC", mcVersion)
 	vars.put("FABRIC", mod_brand == 'fabric' ? 1 : 0)
 	vars.put("FORGE", mod_brand == 'forge' ? 1 : 0)
+	vars.put("NEOFORGE", mod_brand == 'neoforge' ? 1 : 0)
+	vars.put("FORGE_LIKE", mod_brand in ['forge', 'neoforge'] ? 1 : 0)
 }
 
 repositories {
@@ -24,6 +26,9 @@ repositories {
 	}
 	maven {
 		url 'https://maven.fallenbreath.me/releases'
+	}
+	maven {
+		url 'https://maven.neoforged.net/releases'
 	}
 }
 
@@ -35,12 +40,22 @@ configurations {
 dependencies {
 	// loom
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	if (mod_brand == 'fabric' || mod_brand == 'forge') {
+		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	} else {
+		// https://github.com/architectury/architectury-loom/issues/214
+		mappings loom.layered {
+			mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+			it.mappings("dev.architectury:yarn-mappings-patch-neoforge:${project.yarn_mappings_patch}")
+		}
+	}
 
 	if (mod_brand == 'fabric') {
 		modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
-	} else {
+	} else if (mod_brand == 'forge') {
 		forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+	} else if (mod_brand == 'neoforge') {
+		neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 	}
 
 	// runtime mods
@@ -100,10 +115,10 @@ String finalModVersion = project.mod_version + modVersionSuffix
 String fullProjectVersion, fullArtifactVersion
 
 // Example version values:
-//   project.mod_version   1.0.3                      (the base mod version)
-//   finalModVersion       1.0.3+build.88             (the actual mod version to use)
-//   fullProjectVersion    mc1.15.2-v1.0.3+build.88   (in build output jar name)
-//   fullArtifactVersion   mc1.15.2-v1.0.3-SNAPSHOT   (maven artifact version)
+//   project.mod_version   1.0.3                             (the base mod version)
+//   finalModVersion       1.0.3+build.88                    (the actual mod version to use)
+//   fullProjectVersion    mc1.15.2-fabric-v1.0.3+build.88   (in build output jar name)
+//   fullArtifactVersion   mc1.15.2-fabric-v1.0.3-SNAPSHOT   (maven artifact version)
 
 group = project.maven_group
 if (System.getenv("JITPACK") == "true") {
@@ -126,24 +141,32 @@ processResources {
 	inputs.property "version", finalModVersion
 	inputs.property "minecraft_dependency", project.minecraft_dependency
 
+	def good_files = [] as Set
+	def all_files = [] as Set
 	[
 			'fabric': ['fabric.mod.json'],
 			'forge': ['META-INF', 'META-INF/mods.toml', 'pack.mcmeta'],
-	].forEach { brand, files ->
-		files.forEach { name ->
-			if (brand == mod_brand) {
-				filesMatching(name) {
-					def valueMap = [
-							"id": project.mod_id,
-							"name": project.mod_name,
-							"version": finalModVersion,
-							"minecraft_dependency": project.minecraft_dependency,
-					]
-					expand valueMap
-				}
-			} else {
-				exclude name
+			'neoforge': ['META-INF', 'META-INF/neoforge.mods.toml', 'pack.mcmeta'],
+	].forEach { brand, paths ->
+		all_files.addAll(paths)
+		if (brand == mod_brand) {
+			good_files.addAll(paths)
+		}
+	}
+	all_files.forEach { it2 ->
+		def path = it2 as String
+		if (good_files.contains(path)) {
+			filesMatching(path) {
+				def valueMap = [
+						"id": project.mod_id,
+						"name": project.mod_name,
+						"version": finalModVersion,
+						"minecraft_dependency": project.minecraft_dependency,
+				]
+				expand valueMap
 			}
+		} else {
+			exclude path
 		}
 	}
 
@@ -151,7 +174,7 @@ processResources {
 		filter { s -> s.replace('{{COMPATIBILITY_LEVEL}}', "JAVA_${MIXIN_COMPATIBILITY_LEVEL.ordinal() + 1}") }
 	}
 
-	if (mod_brand == 'forge') {
+	if (mod_brand == 'forge' || mod_brand == 'neoforge') {
 		// forge requires the mod icon file to be at the resource root
 		filesMatching(MOD_ICON_PATH) { f -> f.path = new File(f.path).getName() }
 	}

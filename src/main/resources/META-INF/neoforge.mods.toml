@@ -1,5 +1,5 @@
-modLoader = "javafml"
-loaderVersion = "[31,)"
+modLoader="javafml"
+loaderVersion="[1,)"
 license = "LGPLv3"
 issueTrackerURL = "https://github.com/Fallen-Breath/fabric-mod-template/issues"
 
@@ -13,6 +13,9 @@ description = '''
 Template for my fabric mods
 '''
 logoFile = "icon.png"
+
+[[mixins]]
+config = "${id}.mixins.json"
 
 [[dependencies."${id}"]]
 modId = "minecraft"

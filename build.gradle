@@ -29,6 +29,10 @@ preprocess {
 	def mc119_forge   = createNode('1.19.4-forge' , 1_19_04, '')
 	def mc1204_forge  = createNode('1.20.4-forge' , 1_20_04, '')
 	// Architectury Loom does not support mc1.20.5+ forge at all
+	// see also: https://github.com/architectury/architectury-loom/pull/219
+
+	def mc1206_neoforge = createNode('1.20.6-neoforge', 1_20_06, '')
+	def mc121_neoforge  = createNode('1.21-neoforge'  , 1_21_00, '')
 
 	mc114_fabric.link(mc115_fabric, null)
 	mc115_fabric.link(mc116_fabric, null)
@@ -45,6 +49,9 @@ preprocess {
 	mc118_fabric.link(mc118_forge, null)
 	mc119_fabric.link(mc119_forge, null)
 	mc1204_fabric.link(mc1204_forge, null)
+
+	mc1206_fabric.link(mc1206_neoforge, null)
+	mc121_fabric.link(mc121_neoforge, null)
 }
 
 tasks.register('buildAndGather') {

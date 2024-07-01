@@ -32,12 +32,17 @@ import org.apache.logging.log4j.Logger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-
 //#elseif FORGE
 //$$ import net.minecraftforge.fml.ModList;
 //$$ import net.minecraftforge.fml.common.Mod;
 //$$ import net.minecraftforge.forgespi.language.IModInfo;
-//$$
+//#elseif NEOFORGE
+//$$ import net.neoforged.fml.ModList;
+//$$ import net.neoforged.fml.common.Mod;
+//$$ import net.neoforged.neoforgespi.language.IModInfo;
+//#endif
+
+//#if FORGE_LIKE
 //$$ @Mod(TemplateMod.MOD_ID)
 //#endif
 public class TemplateMod
@@ -66,13 +71,13 @@ public class TemplateMod
 		LOGGER.info("Hello {} v{} from fabric!", MOD_NAME, MOD_VERSION);
 		this.init();
 	}
-	//#elseif FORGE
+	//#elseif FORGE_LIKE
 	//$$ public TemplateMod()
 	//$$ {
 	//$$ 	IModInfo modInfo = ModList.get().getModContainerById(MOD_ID).orElseThrow(RuntimeException::new).getModInfo();
 	//$$ 	MOD_NAME = modInfo.getDisplayName();
 	//$$ 	MOD_VERSION = modInfo.getVersion().toString();
-	//$$ 	LOGGER.info("Hello {} v{} from forge!", MOD_NAME, MOD_VERSION);
+	//$$ 	LOGGER.info("Hello {} v{} from forge-like!", MOD_NAME, MOD_VERSION);
 	//$$ 	this.init();
 	//$$ }
 	//#endif

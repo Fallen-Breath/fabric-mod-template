@@ -15,6 +15,9 @@
     "1.17.1-forge",
     "1.18.2-forge",
     "1.19.4-forge",
-    "1.20.4-forge"
+    "1.20.4-forge",
+
+    "1.20.6-neoforge",
+    "1.21-neoforge"
   ]
 }

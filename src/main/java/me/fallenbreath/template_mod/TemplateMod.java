@@ -24,7 +24,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 
-//#if MC >= 11800
+//#if MC >= 11802
 //$$ import com.mojang.logging.LogUtils;
 //$$ import org.slf4j.Logger;
 //#else
@@ -35,7 +35,7 @@ import org.apache.logging.log4j.Logger;
 public class TemplateMod implements ModInitializer
 {
 	public static final Logger LOGGER =
-			//#if MC >= 11800
+			//#if MC >= 11802
 			//$$ LogUtils.getLogger();
 			//#else
 			LogManager.getLogger();

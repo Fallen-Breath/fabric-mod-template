@@ -58,17 +58,19 @@ if (mcVersion >= 12005) {
 JavaVersion MIXIN_COMPATIBILITY_LEVEL = JAVA_COMPATIBILITY
 
 loom {
+	def commonVmArgs = ['-Dmixin.debug.export=true', '-Dmixin.debug.countInjections=true']
 	runConfigs.configureEach {
 		// to make sure it generates all "Minecraft Client (:subproject_name)" applications
 		ideConfigGenerated = true
 		runDir '../../run'
-		vmArgs '-Dmixin.debug.export=true'
+		vmArgs commonVmArgs
 	}
 //	// [FEATURE] MIXIN_AUDITOR
 //	runs {
+//		def auditVmArgs = ['-DmixinAuditor.audit=true']
 //		serverMixinAudit {
 //			server()
-//			vmArgs '-DmixinAuditor.audit=true'
+//			vmArgs auditVmArgs
 //			ideConfigGenerated false
 //		}
 //	}

@@ -20,7 +20,7 @@
 
 package me.fallenbreath.template_mod;
 
-//#if MC >= 11800
+//#if MC >= 11802
 //$$ import com.mojang.logging.LogUtils;
 //$$ import org.slf4j.Logger;
 //#else
@@ -51,7 +51,7 @@ public class TemplateMod
 		//#endif
 {
 	public static final Logger LOGGER =
-			//#if MC >= 11800
+			//#if MC >= 11802
 			//$$ LogUtils.getLogger();
 			//#else
 			LogManager.getLogger();

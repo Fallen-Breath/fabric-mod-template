@@ -48,7 +48,7 @@ jobs:
     steps:
       - name: Get github release information
         if: ${{ github.event_name == 'workflow_dispatch' }}
-        uses: cardinalby/git-get-release-action@1.2.4
+        uses: cardinalby/git-get-release-action@1.2.5
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -95,7 +95,7 @@ jobs:
       - name: Get github release information
         if: ${{ github.event_name == 'workflow_dispatch' }}
         id: get_release
-        uses: cardinalby/git-get-release-action@1.2.4
+        uses: cardinalby/git-get-release-action@1.2.5
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -192,7 +192,7 @@ jobs:
           files: ${{ steps.file_info.outputs.path }}
 
           name: ${{ format('[{0}] {1} v{2} for mc{3}', matrix.mod_brand, steps.properties_g.outputs.mod_name, steps.properties_g.outputs.mod_version, steps.properties_v.outputs.minecraft_version) }}
-          version: ${{ format('mc{0}-v{1}', steps.properties_v.outputs.minecraft_version, steps.properties_g.outputs.mod_version) }}
+          version: ${{ format('v{1}-mc{0}-{2}', steps.properties_v.outputs.minecraft_version, steps.properties_g.outputs.mod_version, matrix.mod_brand) }}
           version-type: release
 
           loaders: ${{ matrix.mod_brand }}

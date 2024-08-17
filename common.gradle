@@ -40,12 +40,11 @@ configurations {
 dependencies {
 	// loom
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	if (mod_brand == 'fabric' || mod_brand == 'forge') {
+	mappings loom.layered {
 		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	} else {
+
 		// https://github.com/architectury/architectury-loom/issues/214
-		mappings loom.layered {
-			mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+		if (mod_brand == 'neoforge' && project.hasProperty('yarn_mappings_patch')) {
 			it.mappings("dev.architectury:yarn-mappings-patch-neoforge:${project.yarn_mappings_patch}")
 		}
 	}

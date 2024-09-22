@@ -71,7 +71,7 @@ String MOD_ICON_PATH = 'assets/template_mod/icon.png'
 String MIXIN_CONFIG_PATH = 'template_mod.mixins.json'
 String LANG_DIR = 'assets/template_mod/lang'
 JavaVersion JAVA_COMPATIBILITY
-if (mcVersion >= 12005) {
+if (mcVersion >= 12005 && !(mcVersion < 12100 && mod_brand == 'forge')) {
 	JAVA_COMPATIBILITY = JavaVersion.VERSION_21
 } else if (mcVersion >= 11800) {
 	JAVA_COMPATIBILITY = JavaVersion.VERSION_17

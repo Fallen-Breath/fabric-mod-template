@@ -67,7 +67,7 @@ loom {
 	}
 //	// [FEATURE] MIXIN_AUDITOR
 //	runs {
-//		def auditVmArgs = ['-DmixinAuditor.audit=true']
+//		def auditVmArgs = [*commonVmArgs, '-DmixinAuditor.audit=true']
 //		serverMixinAudit {
 //			server()
 //			vmArgs auditVmArgs

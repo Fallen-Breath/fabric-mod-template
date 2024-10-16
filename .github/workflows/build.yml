@@ -107,6 +107,8 @@ jobs:
           path: build-artifacts
 
       - name: Make build summary
-        run: python .github/workflows/scripts/summary.py
+        run: |
+          pip install jproperties
+          python .github/workflows/scripts/summary.py
         env:
           TARGET_SUBPROJECT: ${{ inputs.target_subproject }}

@@ -76,10 +76,6 @@ loom {
 //	}
 }
 
-remapJar {
-	remapperIsolation = true
-}
-
 String modVersionSuffix = ''
 String artifactVersion = project.mod_version
 String artifactVersionSuffix = ''

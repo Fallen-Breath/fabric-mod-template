@@ -8,11 +8,8 @@ def mod_brand = (loom.platform.get() as String).toLowerCase()
 assert mod_brand in ['fabric', 'forge', 'neoforge']
 assert project.name.endsWith('-' + mod_brand)  // optional check
 
-int mcVersion = 1
+int mcVersion = project.mcVersion
 preprocess {
-	mcVersion = vars.get()["MC"] as int
-	tabIndentation = true
-
 	vars.put("MC", mcVersion)
 	vars.put("FABRIC", mod_brand == 'fabric' ? 1 : 0)
 	vars.put("FORGE", mod_brand == 'forge' ? 1 : 0)
@@ -96,10 +93,6 @@ loom {
 			mixinConfigs = [MIXIN_CONFIG_PATH]
 		}
 	}
-}
-
-remapJar {
-	remapperIsolation = true
 }
 
 String modVersionSuffix = ''

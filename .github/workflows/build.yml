@@ -58,13 +58,13 @@ jobs:
           BUILD_RELEASE: ${{ inputs.release }}
 
 #      # [FEATURE] MIXIN_AUDITOR
-#      - name: Run mixin audit check for Minecraft server
+#      - name: Run mixin audit check for Minecraft client
 #        if: ${{ inputs.mixin_audit }}
 #        timeout-minutes: 10
 #        run: |
 #          mkdir -p ./run
 #          echo eula=true > ./run/eula.txt
-#          ./gradlew runServerMixinAudit
+#          ./gradlew runClientMixinAudit
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

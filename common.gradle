@@ -204,7 +204,7 @@ publishing {
 		mavenJava(MavenPublication) {
 			from components.java
 			artifactId = base.archivesName.get()
-            version = fullArtifactVersion
+			version = fullArtifactVersion
 		}
 	}
 

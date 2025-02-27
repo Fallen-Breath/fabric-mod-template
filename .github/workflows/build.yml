@@ -14,7 +14,7 @@ on:
         default: ''
 #      # [FEATURE] MIXIN_AUDITOR
 #      mixin_audit:
-#        description: run mixin audit for Minecraft server after build
+#        description: run mixin audit for Minecraft after build
 #        type: boolean
 #        required: false
 #        default: false

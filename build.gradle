@@ -1,7 +1,7 @@
 plugins {
 	id 'maven-publish'
 	id 'com.github.hierynomus.license' version '0.16.1' apply false
-	id 'dev.architectury.loom' version '1.9-SNAPSHOT' apply false
+	id 'dev.architectury.loom' version '1.10-SNAPSHOT' apply false
 
 	// https://github.com/ReplayMod/preprocessor
 	// https://github.com/Fallen-Breath/preprocessor
@@ -25,6 +25,7 @@ preprocess {
     def mc1211_fabric = createNode('1.21.1-fabric', 1_21_01, '')
     def mc1213_fabric = createNode('1.21.3-fabric', 1_21_03, '')
     def mc1214_fabric = createNode('1.21.4-fabric', 1_21_04, '')
+    def mc1215_fabric = createNode('1.21.5-fabric', 1_21_05, '')
 
 	def mc115_forge  = createNode('1.15.2-forge', 1_15_02, '')
 	def mc116_forge  = createNode('1.16.5-forge', 1_16_05, '')
@@ -36,11 +37,13 @@ preprocess {
     def mc1211_forge = createNode('1.21.1-forge', 1_21_01, '')
     def mc1213_forge = createNode('1.21.3-forge', 1_21_03, '')
     def mc1214_forge = createNode('1.21.4-forge', 1_21_04, '')
+    def mc1215_forge = createNode('1.21.5-forge', 1_21_05, '')
 
 	def mc1206_neoforge = createNode('1.20.6-neoforge', 1_20_06, '')
     def mc1211_neoforge = createNode('1.21.1-neoforge', 1_21_01, '')
     def mc1213_neoforge = createNode('1.21.3-neoforge', 1_21_03, '')
     def mc1214_neoforge = createNode('1.21.4-neoforge', 1_21_04, '')
+    def mc1215_neoforge = createNode('1.21.5-neoforge', 1_21_05, '')
 
 	mc114_fabric .link(mc115_fabric , null)
 	mc115_fabric .link(mc116_fabric , null)
@@ -52,6 +55,7 @@ preprocess {
 	mc1206_fabric.link(mc1211_fabric , null)
     mc1211_fabric.link(mc1213_fabric , null)
     mc1213_fabric.link(mc1214_fabric , null)
+    mc1214_fabric.link(mc1215_fabric , null)
 
 	mc115_fabric .link(mc115_forge , null)
 	mc116_fabric .link(mc116_forge , null)
@@ -63,11 +67,13 @@ preprocess {
     mc1211_fabric.link(mc1211_forge, null)
     mc1213_fabric.link(mc1213_forge, null)
     mc1214_fabric.link(mc1214_forge, null)
+    mc1215_fabric.link(mc1215_forge, null)
 
 	mc1206_fabric.link(mc1206_neoforge, null)
 	mc1211_fabric.link(mc1211_neoforge, null)
 	mc1213_fabric.link(mc1213_neoforge, null)
 	mc1214_fabric.link(mc1214_neoforge, null)
+	mc1215_fabric.link(mc1215_neoforge, null)
 }
 
 tasks.register('buildAndGather') {

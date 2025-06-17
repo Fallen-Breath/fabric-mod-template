@@ -58,7 +58,7 @@ preprocess {
     mc1211_fabric.link(mc1213_fabric , null)
     mc1213_fabric.link(mc1214_fabric , null)
     mc1214_fabric.link(mc1215_fabric , null)
-    mc1216_fabric.link(mc1216_fabric , null)
+    mc1215_fabric.link(mc1216_fabric , null)
 
 	mc115_fabric .link(mc115_forge , null)
 	mc116_fabric .link(mc116_forge , null)

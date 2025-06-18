@@ -39,6 +39,7 @@ preprocess {
     def mc1213_forge = createNode('1.21.3-forge', 1_21_03, '')
     def mc1214_forge = createNode('1.21.4-forge', 1_21_04, '')
     def mc1215_forge = createNode('1.21.5-forge', 1_21_05, '')
+    def mc1216_forge = createNode('1.21.6-forge', 1_21_06, '')
 
 	def mc1206_neoforge = createNode('1.20.6-neoforge', 1_20_06, '')
     def mc1211_neoforge = createNode('1.21.1-neoforge', 1_21_01, '')
@@ -71,6 +72,7 @@ preprocess {
     mc1213_fabric.link(mc1213_forge, null)
     mc1214_fabric.link(mc1214_forge, null)
     mc1215_fabric.link(mc1215_forge, null)
+    mc1216_fabric.link(mc1216_forge, null)
 
 	mc1206_fabric.link(mc1206_neoforge, null)
 	mc1211_fabric.link(mc1211_neoforge, null)

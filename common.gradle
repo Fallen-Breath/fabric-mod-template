@@ -36,7 +36,9 @@ dependencies {
 	// dependencies
 //	include(modImplementation(fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)))
 //	include(modImplementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
-//	include(annotationProcessor(implementation("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")))
+//	if (mcVersion < 12005) {
+//		include("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")
+//	}
 }
 
 String MIXIN_CONFIG_PATH = 'template_mod.mixins.json'

@@ -34,7 +34,13 @@ dependencies {
 //	modRuntimeOnly 'me.fallenbreath:mixin-auditor:0.1.0'
 
 	// dependencies
-//	include(modImplementation(fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)))
+//	def fabricApiModules = ["fabric-resource-loader-v0"]
+//	if (mcVersion >= 12105) {  // "fabric-resource-loader-v0" dependency since fabric api 0.127.0
+//		fabricApiModules.add("fabric-api-base")
+//	}
+//	fabricApiModules.forEach {
+//		include(modImplementation(fabricApi.module(it, project.fabric_api_version)))
+//	}
 //	include(modImplementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
 //	if (mcVersion < 12005) {
 //		include("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")

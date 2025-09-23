@@ -23,19 +23,21 @@ preprocess {
     strictExtraMappings = false
 
 	def settings = new JsonSlurper().parseText(file('settings.json').text)
+	def all_versions = new ArrayList<>(settings.versions)
+	all_versions.sort()  // low -> high
 	Map<String, Node> all_nodes = [:]
 
-	for (String version : settings.versions) {
+	for (String version : all_versions) {
 		String[] versionParts = version.split("-")[0].split("\\.")
 		if (versionParts.size() == 2) {
-			parts = [versionParts[0], versionParts[1], "0"]
+			versionParts = [versionParts[0], versionParts[1], "0"]
 		}
 		int versionId = Integer.parseInt(versionParts[0]) * 10000 + Integer.parseInt(versionParts[1]) * 100 + Integer.parseInt(versionParts[2])
 		all_nodes[version] = createNode(version, versionId, '')
 	}
 
 	Node prev_fabric_node = null
-	for (String version : settings.versions) {
+	for (String version : all_versions) {
 		def (mc_version, mod_brand) = version.split("-")
 		def node = all_nodes[version]
 		switch (mod_brand) {

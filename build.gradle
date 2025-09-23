@@ -1,3 +1,6 @@
+import com.replaymod.gradle.preprocess.Node
+import groovy.json.JsonSlurper
+
 plugins {
 	id 'maven-publish'
 	id 'com.github.hierynomus.license' version '0.16.1' apply false
@@ -11,73 +14,41 @@ plugins {
 	id 'me.fallenbreath.yamlang' version '1.5.0' apply false
 }
 
+def linkNode(Node src, Node dst) {
+	def mappingFile = rootProject.file("versions/mapping-${src.project}-${dst.project}.txt")
+	src.link(dst, mappingFile.isFile() ? mappingFile : null)
+}
+
 preprocess {
     strictExtraMappings = false
 
-    def mc114_fabric  = createNode('1.14.4-fabric', 1_14_04, '')
-	def mc115_fabric  = createNode('1.15.2-fabric', 1_15_02, '')
-	def mc116_fabric  = createNode('1.16.5-fabric', 1_16_05, '')
-	def mc117_fabric  = createNode('1.17.1-fabric', 1_17_01, '')
-	def mc118_fabric  = createNode('1.18.2-fabric', 1_18_02, '')
-	def mc119_fabric  = createNode('1.19.4-fabric', 1_19_04, '')
-	def mc1204_fabric = createNode('1.20.4-fabric', 1_20_04, '')
-	def mc1206_fabric = createNode('1.20.6-fabric', 1_20_06, '')
-    def mc1211_fabric = createNode('1.21.1-fabric', 1_21_01, '')
-    def mc1213_fabric = createNode('1.21.3-fabric', 1_21_03, '')
-    def mc1214_fabric = createNode('1.21.4-fabric', 1_21_04, '')
-    def mc1215_fabric = createNode('1.21.5-fabric', 1_21_05, '')
-    def mc1218_fabric = createNode('1.21.8-fabric', 1_21_08, '')
+	def settings = new JsonSlurper().parseText(file('settings.json').text)
+	Map<String, Node> all_nodes = [:]
 
-	def mc116_forge  = createNode('1.16.5-forge', 1_16_05, '')
-	def mc117_forge  = createNode('1.17.1-forge', 1_17_01, '')
-	def mc118_forge  = createNode('1.18.2-forge', 1_18_02, '')
-	def mc119_forge  = createNode('1.19.4-forge', 1_19_04, '')
-	def mc1204_forge = createNode('1.20.4-forge', 1_20_04, '')
-	def mc1206_forge = createNode('1.20.6-forge', 1_20_06, '')
-    def mc1211_forge = createNode('1.21.1-forge', 1_21_01, '')
-    def mc1213_forge = createNode('1.21.3-forge', 1_21_03, '')
-    def mc1214_forge = createNode('1.21.4-forge', 1_21_04, '')
-    def mc1215_forge = createNode('1.21.5-forge', 1_21_05, '')
-    def mc1218_forge = createNode('1.21.8-forge', 1_21_08, '')
+	for (String version : settings.versions) {
+		String[] versionParts = version.split("-")[0].split("\\.")
+		if (versionParts.size() == 2) {
+			parts = [versionParts[0], versionParts[1], "0"]
+		}
+		int versionId = Integer.parseInt(versionParts[0]) * 10000 + Integer.parseInt(versionParts[1]) * 100 + Integer.parseInt(versionParts[2])
+		all_nodes[version] = createNode(version, versionId, '')
+	}
 
-	def mc1206_neoforge = createNode('1.20.6-neoforge', 1_20_06, '')
-    def mc1211_neoforge = createNode('1.21.1-neoforge', 1_21_01, '')
-    def mc1213_neoforge = createNode('1.21.3-neoforge', 1_21_03, '')
-    def mc1214_neoforge = createNode('1.21.4-neoforge', 1_21_04, '')
-    def mc1215_neoforge = createNode('1.21.5-neoforge', 1_21_05, '')
-    def mc1218_neoforge = createNode('1.21.8-neoforge', 1_21_08, '')
-
-	mc114_fabric .link(mc115_fabric , null)
-	mc115_fabric .link(mc116_fabric , null)
-	mc116_fabric .link(mc117_fabric , null)
-	mc117_fabric .link(mc118_fabric , null)
-	mc118_fabric .link(mc119_fabric , null)
-	mc119_fabric .link(mc1204_fabric, null)
-	mc1204_fabric.link(mc1206_fabric, null)
-	mc1206_fabric.link(mc1211_fabric , null)
-    mc1211_fabric.link(mc1213_fabric , null)
-    mc1213_fabric.link(mc1214_fabric , null)
-    mc1214_fabric.link(mc1215_fabric , null)
-    mc1215_fabric.link(mc1218_fabric , null)
-
-	mc116_fabric .link(mc116_forge , null)
-	mc117_fabric .link(mc117_forge , null)
-	mc118_fabric .link(mc118_forge , null)
-	mc119_fabric .link(mc119_forge , null)
-	mc1204_fabric.link(mc1204_forge, null)
-	mc1206_fabric.link(mc1206_forge, null)
-    mc1211_fabric.link(mc1211_forge, null)
-    mc1213_fabric.link(mc1213_forge, null)
-    mc1214_fabric.link(mc1214_forge, null)
-    mc1215_fabric.link(mc1215_forge, null)
-    mc1218_fabric.link(mc1218_forge, null)
-
-	mc1206_fabric.link(mc1206_neoforge, null)
-	mc1211_fabric.link(mc1211_neoforge, null)
-	mc1213_fabric.link(mc1213_neoforge, null)
-	mc1214_fabric.link(mc1214_neoforge, null)
-	mc1215_fabric.link(mc1215_neoforge, null)
-	mc1218_fabric.link(mc1218_neoforge, null)
+	Node prev_fabric_node = null
+	for (String version : settings.versions) {
+		def (mc_version, mod_brand) = version.split("-")
+		def node = all_nodes[version]
+		switch (mod_brand) {
+			case "fabric":
+				if (prev_fabric_node != null) {
+					linkNode(prev_fabric_node, all_nodes[version])
+				}
+				prev_fabric_node = node
+				break
+			default:
+				linkNode(all_nodes["${mc_version}-fabric"], all_nodes[version])
+		}
+	}
 }
 
 tasks.register('buildAndGather') {

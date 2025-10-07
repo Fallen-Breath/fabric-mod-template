@@ -41,8 +41,10 @@ dependencies {
 		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 
 		// https://github.com/architectury/architectury-loom/issues/214
-		if (mod_brand == 'neoforge' && project.hasProperty('yarn_mappings_patch')) {
-			it.mappings("dev.architectury:yarn-mappings-patch-neoforge:${project.yarn_mappings_patch}")
+		// https://github.com/architectury/architectury-loom/issues/300
+		if (project.hasProperty('yarn_mappings_patch')) {
+			def module = mod_brand == 'neoforge' ? 'yarn-mappings-patch-neoforge' : 'yarn-mappings-patch-forge'
+			it.mappings("dev.architectury:${module}:${project.yarn_mappings_patch}")
 		}
 	}
 

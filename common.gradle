@@ -35,8 +35,11 @@ dependencies {
 
 	// dependencies
 //	def fabricApiModules = ["fabric-resource-loader-v0"]
-//	if (mcVersion >= 12105) {  // "fabric-resource-loader-v0" dependency since fabric api 0.127.0
+//	if (mcVersion >= 12105) {  // "fabric-resource-loader-v0" dependency since fabric api 0.117.0 (25w07a, mc1.21.5 snapshot)
 //		fabricApiModules.add("fabric-api-base")
+//	}
+//	if (mcVersion >= 12109) {  // "fabric-resource-loader-v0" dependency since fabric api 0.133.11 (1.21.9-rc1)
+//		fabricApiModules.add("fabric-resource-loader-v1")
 //	}
 //	fabricApiModules.forEach {
 //		include(modImplementation(fabricApi.module(it, project.fabric_api_version)))

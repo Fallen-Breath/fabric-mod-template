@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MinecraftServerMixin
 {
 	@Inject(
-			//#if MC >= 11600
+			//#if MC >= 1.16.0
 			//$$ method = "runServer",
 			//#else
 			method = "run",
@@ -40,9 +40,9 @@ public abstract class MinecraftServerMixin
 	)
 	private void onRun(CallbackInfo ci)
 	{
-		//#if MC >= 11500
+		//#if MC >= 1.15.0
 		System.err.println("Hello world from mc11500 branch");
-		//#elseif MC >= 11400
+		//#elseif MC >= 1.14.0
 		//$$ System.err.println("Hello world from mc11400 branch");
 		//#endif
 

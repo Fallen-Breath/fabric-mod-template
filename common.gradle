@@ -37,16 +37,7 @@ configurations {
 dependencies {
 	// loom
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.layered {
-		mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-
-		// https://github.com/architectury/architectury-loom/issues/214
-		// https://github.com/architectury/architectury-loom/issues/300
-		if (project.hasProperty('yarn_mappings_patch')) {
-			def module = mod_brand == 'neoforge' ? 'yarn-mappings-patch-neoforge' : 'yarn-mappings-patch-forge'
-			it.mappings("dev.architectury:${module}:${project.yarn_mappings_patch}")
-		}
-	}
+    mappings loom.officialMojangMappings()
 
 	if (mod_brand == 'fabric') {
 		modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"

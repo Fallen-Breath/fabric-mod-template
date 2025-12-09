@@ -24,7 +24,6 @@ preprocess {
 
 	def settings = new JsonSlurper().parseText(file('settings.json').text)
 	def all_versions = new ArrayList<>(settings.versions)
-	all_versions.sort()  // low -> high
 	Map<String, Node> all_nodes = [:]
 
 	for (String version : all_versions) {

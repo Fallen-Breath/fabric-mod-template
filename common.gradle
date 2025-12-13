@@ -136,10 +136,13 @@ version = fullProjectVersion
 // See https://youtrack.jetbrains.com/issue/IDEA-296490
 // if IDEA complains about "Cannot resolve resource filtering of MatchingCopyAction" and you want to know why
 processResources {
-	inputs.property "id", project.mod_id
-	inputs.property "name", project.mod_name
-	inputs.property "version", fullModVersion
-	inputs.property "minecraft_dependency", project.minecraft_dependency
+	def modProperties = [
+			"id"                  : project.mod_id,
+			"name"                : project.mod_name,
+			"version"             : fullModVersion,
+			"minecraft_dependency": project.minecraft_dependency,
+	]
+	inputs.properties(modProperties)
 
 	def good_files = [] as Set
 	def all_files = [] as Set
@@ -157,13 +160,7 @@ processResources {
 		def path = it2 as String
 		if (good_files.contains(path)) {
 			filesMatching(path) {
-				def valueMap = [
-						"id": project.mod_id,
-						"name": project.mod_name,
-						"version": fullModVersion,
-						"minecraft_dependency": project.minecraft_dependency,
-				]
-				expand valueMap
+				expand modProperties
 			}
 		} else {
 			exclude path

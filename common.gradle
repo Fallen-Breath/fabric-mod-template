@@ -177,8 +177,9 @@ java {
 }
 
 jar {
+	inputs.property "archives_base_name", project.archives_base_name
 	from(rootProject.file('LICENSE')) {
-		rename { "${it}_${project.archives_base_name}" }
+		rename { "${it}_${inputs.properties.archives_base_name}" }
 	}
 }
 

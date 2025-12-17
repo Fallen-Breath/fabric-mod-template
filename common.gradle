@@ -29,13 +29,12 @@ configurations {
 }
 
 dependencies {
-	def autoImplementation = { dep -> unobfuscated ? implementation(dep) : modImplementation(dep) }
-	def autoRuntimeOnly = { dep -> unobfuscated ? runtimeOnly(dep) : modRuntimeOnly(dep) }
-	def autoCompileOnly = { dep -> unobfuscated ? compileOnly(dep) : modCompileOnly(dep) }
+	def autoImplementation = { Object... args -> unobfuscated ? implementation(*args) : modImplementation(*args) }
+	def autoRuntimeOnly = { Object... args -> unobfuscated ? runtimeOnly(*args) : modRuntimeOnly(*args) }
+	def autoCompileOnly = { Object... args -> unobfuscated ? compileOnly(*args) : modCompileOnly(*args) }
 
 	// loom
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	autoImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	if (!unobfuscated) {
 		mappings loom.layered() {
 			officialMojangMappings()
@@ -44,6 +43,7 @@ dependencies {
 			}
 		}
 	}
+	autoImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// runtime mods
 //	if (mcVersion < 11904) {

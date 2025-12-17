@@ -31,6 +31,7 @@ configurations {
 dependencies {
 	def autoImplementation = { dep -> unobfuscated ? implementation(dep) : modImplementation(dep) }
 	def autoRuntimeOnly = { dep -> unobfuscated ? runtimeOnly(dep) : modRuntimeOnly(dep) }
+	def autoCompileOnly = { dep -> unobfuscated ? compileOnly(dep) : modCompileOnly(dep) }
 
 	// loom
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"

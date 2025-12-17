@@ -52,12 +52,7 @@ preprocess {
 	mc12110.link(mc12111, null)
 	mc12111.link(mc260100, null)
 
-	// We need to setup `project.mcVersion` here, not by applying the preprocess plugin.
-	// The reason is to avoid a circular dependency issue:
-	// 1. Applying the preprocess requires the project to have a SourceSetContainer extension
-	// 2. The SourceSetContainer is created during applying loom, so preprocess needs loom
-	// 3. We need to use `project.mcVersion` to decide if it's unobfuscated to choose the correct loom plugin
-	// 4. The `project.mcVersion` is configured on applying preproces, so loom needs preprocess
+	// See https://github.com/Fallen-Breath/fabric-mod-template/blob/1d72d77a1c5ce0bf060c2501270298a12adab679/build.gradle#L55-L63
 	for (final def node in getNodes()) {
 		findProject(node.project).ext.mcVersion = node.mcVersion
 	}

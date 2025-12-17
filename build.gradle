@@ -1,11 +1,12 @@
 plugins {
 	id 'maven-publish'
 	id 'com.github.hierynomus.license' version '0.16.1' apply false
-	id 'fabric-loom' version '1.14-SNAPSHOT' apply false
+	id 'net.fabricmc.fabric-loom' version '1.14-SNAPSHOT' apply false
+	id 'net.fabricmc.fabric-loom-remap' version '1.14-SNAPSHOT' apply false
 
 	// https://github.com/ReplayMod/preprocessor
 	// https://github.com/Fallen-Breath/preprocessor
-	id 'com.replaymod.preprocess' version '48cb0c80f7'
+	id 'com.replaymod.preprocess' version 'c5abb4fb12'
 
 	// https://github.com/Fallen-Breath/yamlang
 	id 'me.fallenbreath.yamlang' version '1.5.0' apply false
@@ -31,6 +32,7 @@ preprocess {
 	def mc1218 = createNode('1.21.8', 1_21_08, '')
 	def mc12110 = createNode('1.21.10', 1_21_10, '')
 	def mc12111 = createNode('1.21.11', 1_21_11, '')
+	def mc260100 = createNode('26.1', 26_01_00, '')
 
 	mc115 .link(mc114 , null)
 	mc115 .link(mc116 , null)
@@ -48,6 +50,17 @@ preprocess {
 	mc1215.link(mc1218, null)
 	mc1218.link(mc12110, null)
 	mc12110.link(mc12111, null)
+	mc12111.link(mc260100, null)
+
+	// We need to setup `project.mcVersion` here, not by applying the preprocess plugin.
+	// The reason is to avoid a circular dependency issue:
+	// 1. Applying the preprocess requires the project to have a SourceSetContainer extension
+	// 2. The SourceSetContainer is created during applying loom, so preprocess needs loom
+	// 3. We need to use `project.mcVersion` to decide if it's unobfuscated to choose the correct loom plugin
+	// 4. The `project.mcVersion` is configured on applying preproces, so loom needs preprocess
+	for (final def node in getNodes()) {
+		findProject(node.project).ext.mcVersion = node.mcVersion
+	}
 }
 
 tasks.register('buildAndGather') {

@@ -19,19 +19,17 @@ repositories {
 	}
 }
 
-// https://github.com/FabricMC/fabric-loader/issues/783
-configurations {
-	if (unobfuscated) {
-		runtimeOnly.exclude group: 'net.fabricmc', module: 'fabric-loader'
-	} else {
-		modRuntimeOnly.exclude group: 'net.fabricmc', module: 'fabric-loader'
-	}
-}
-
 dependencies {
-	def autoImplementation = { Object... args -> unobfuscated ? implementation(*args) : modImplementation(*args) }
-	def autoRuntimeOnly = { Object... args -> unobfuscated ? runtimeOnly(*args) : modRuntimeOnly(*args) }
-	def autoCompileOnly = { Object... args -> unobfuscated ? compileOnly(*args) : modCompileOnly(*args) }
+	def processDependency = { dep ->
+		// https://github.com/FabricMC/fabric-loader/issues/783
+		if (dep instanceof ModuleDependency && !(dep.group == 'net.fabricmc' && dep.name == 'fabric-loader')) {
+			dep.exclude group: 'net.fabricmc', module: 'fabric-loader'
+		}
+		return dep
+	}
+	def autoImplementation = { Object... args -> processDependency(unobfuscated ? implementation(*args) : modImplementation(*args)) }
+	def autoRuntimeOnly = { Object... args -> processDependency(unobfuscated ? runtimeOnly(*args) : modRuntimeOnly(*args)) }
+	def autoCompileOnly = { Object... args -> processDependency(unobfuscated ? compileOnly(*args) : modCompileOnly(*args)) }
 
 	// loom
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"

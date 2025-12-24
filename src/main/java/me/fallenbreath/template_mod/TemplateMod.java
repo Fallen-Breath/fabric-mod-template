@@ -24,7 +24,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 
-//#if MC >= 11802
+//#if MC >= 1.18.2
 //$$ import com.mojang.logging.LogUtils;
 //$$ import org.slf4j.Logger;
 //#else

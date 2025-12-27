@@ -48,7 +48,7 @@ dependencies {
 //		autoRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
 //	}
 //	// [FEATURE] MIXIN_AUDITOR
-//	autoRuntimeOnly 'me.fallenbreath:mixin-auditor:0.1.0'  // FIXME: update for unobfuscated version
+//	autoRuntimeOnly "me.fallenbreath:mixin-auditor:0.2.0-${unobfuscated ? 'u' : 'o'}"
 
 	// dependencies
 //	def fabricApiModules = []

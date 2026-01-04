@@ -105,6 +105,11 @@ loom {
 //			vmArgs auditVmArgs
 //			ideConfigGenerated false
 //		}
+//		clientMixinAudit {
+//			client()
+//			vmArgs auditVmArgs
+//			ideConfigGenerated false
+//		}
 //	}
 }
 

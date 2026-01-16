@@ -32,7 +32,7 @@ def get_sha256_hash(file_path: str) -> str:
 
 def main():
 	target_subproject_env = os.environ.get('TARGET_SUBPROJECT', '')
-	target_subprojects = list(filter(None, target_subproject_env.split(',') if target_subproject_env != '' else []))
+	target_subprojects = [x for x in target_subproject_env.split(',') if x]
 	print('target_subprojects: {}'.format(target_subprojects))
 
 	with open('settings.json') as f:
@@ -40,10 +40,6 @@ def main():
 
 	with open(os.environ['GITHUB_STEP_SUMMARY'], 'w') as f:
 		f.write('## Build Artifacts Summary\n\n')
-		f.write('Artifacts:\n\n')
-		f.write('- `mod-jars`: Download this if you want to grab the built mod jar to your Minecraft client\n')
-		f.write('- `build-artifacts`: Download this if you are a developer and want to inspect the complete build artifacts\n')
-		f.write('\n')
 		f.write('| Subproject | for Minecraft | File | Size | SHA-256 |\n')
 		f.write('| --- | --- | --- | --- | --- |\n')
 
@@ -55,7 +51,7 @@ def main():
 			game_versions = read_prop('versions/{}/gradle.properties'.format(subproject), 'game_versions')
 			game_versions = game_versions.strip().replace('\r', '').replace('\n', ', ')
 			file_paths = glob.glob('build-artifacts/{}/build/libs/*.jar'.format(subproject))
-			file_paths = list(filter(lambda fp: not fp.endswith('-sources.jar') and not fp.endswith('-dev.jar') and not fp.endswith('-shadow.jar'), file_paths))
+			file_paths = [fp for fp in sorted(file_paths) if all(not fp.endswith(f'-{classifier}.jar') for classifier in ['sources', 'dev', 'shadow'])]
 			if len(file_paths) == 0:
 				file_name = '*not found*'
 				sha256 = '*N/A*'
@@ -72,6 +68,14 @@ def main():
 			f.write('\n### Warnings\n\n')
 			for warning in warnings:
 				f.write('- {}\n'.format(warning))
+
+		f.write('\n')
+		f.write('## How to choose the artifact to download\n\n')
+		f.write('| Artifact | Description | File | Size | SHA-256 |\n')
+		f.write('| --- | --- | --- | --- | --- |\n')
+		f.write('- `mod-jars`: Download this if you want to grab the built mod jar to your Minecraft client\n')
+		f.write('- `build-artifacts`: Download this if you are a developer and want to inspect the complete build artifacts\n')
+		f.write('\n')
 
 
 if __name__ == '__main__':

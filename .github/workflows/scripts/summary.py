@@ -40,6 +40,10 @@ def main():
 
 	with open(os.environ['GITHUB_STEP_SUMMARY'], 'w') as f:
 		f.write('## Build Artifacts Summary\n\n')
+		f.write('Artifacts:\n\n')
+		f.write('- `mod-jars`: Download this if you want to grab the built mod jar to your Minecraft client\n')
+		f.write('- `build-artifacts`: Download this if you are a developer and want to inspect the complete build artifacts\n')
+		f.write('\n')
 		f.write('| Subproject | for Minecraft | File | Size | SHA-256 |\n')
 		f.write('| --- | --- | --- | --- | --- |\n')
 

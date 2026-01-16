@@ -25,8 +25,10 @@ repositories {
 dependencies {
 	def processDependency = { dep ->
 		// https://github.com/FabricMC/fabric-loader/issues/783
-		if (dep instanceof ModuleDependency && !(dep.group == 'net.fabricmc' && dep.name == 'fabric-loader')) {
-			dep.exclude group: 'net.fabricmc', module: 'fabric-loader'
+		if (dep instanceof ModuleDependency) {
+			if (!(dep.group == 'net.fabricmc' && dep.name == 'fabric-loader')) {
+				dep.exclude group: 'net.fabricmc', module: 'fabric-loader'
+			}
 		}
 		return dep
 	}

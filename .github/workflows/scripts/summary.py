@@ -50,7 +50,7 @@ def main():
 
 	with open(os.environ['GITHUB_STEP_SUMMARY'], 'w') as f:
 		f.write('## Build Artifacts Summary\n\n')
-		f.write('| Subproject | for Minecraft | File | Size | SHA-256 |\n')
+		f.write('| Subproject | For Minecraft | File | Size | SHA-256 |\n')
 		f.write('| --- | --- | --- | --- | --- |\n')
 
 		for subproject in settings['versions']:

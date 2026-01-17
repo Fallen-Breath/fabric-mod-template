@@ -84,8 +84,12 @@ jobs:
 
 #      # [FEATURE] FALLENS_MAVEN
 #      - name: Publish with gradle
-#        if: inputs.release || github.ref == 'refs/heads/dev'
+#        if: ${{ inputs.release || github.ref == 'refs/heads/dev' }}
 #        run: |
+#          if [ -z "$FALLENS_MAVEN_TOKEN" ]; then
+#              echo "No token found, skipping publish"
+#              exit 0
+#          fi
 #          if [ -z "${{ inputs.target_subproject }}" ]; then
 #              echo "Publishing all subprojects"
 #              ./gradlew publish

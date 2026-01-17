@@ -31,9 +31,19 @@ def get_sha256_hash(file_path: str) -> str:
 
 
 def main():
-	target_subproject_env = os.environ.get('TARGET_SUBPROJECT', '')
-	target_subprojects = [x for x in target_subproject_env.split(',') if x]
+	warnings: list[str] = []
+
+	target_subproject_env: str = os.environ.get('TARGET_SUBPROJECT', '')
+	target_subprojects: list[str] = [x for x in target_subproject_env.split(',') if x]
 	print('target_subprojects: {}'.format(target_subprojects))
+
+	workflow_artifacts_json_str = os.environ.get('WORKFLOW_ARTIFACTS', '{"artifacts":[]}')
+	artifacts: dict[str, dict] = {}
+	try:
+		artifacts = {artifact['name']: artifact for artifact in json.loads(workflow_artifacts_json_str)['artifacts']}
+		print({artifact['name']: artifact['id'] for artifact in artifacts.values()})
+	except Exception as e:
+		warnings.append(f'Failed to parse workflow artifacts JSON: {e}, {workflow_artifacts_json_str!r}')
 
 	with open('settings.json') as f:
 		settings: dict = json.load(f)
@@ -43,14 +53,13 @@ def main():
 		f.write('| Subproject | for Minecraft | File | Size | SHA-256 |\n')
 		f.write('| --- | --- | --- | --- | --- |\n')
 
-		warnings = []
 		for subproject in settings['versions']:
 			if len(target_subprojects) > 0 and subproject not in target_subprojects:
 				print('skipping {}'.format(subproject))
 				continue
-			game_versions = read_prop('versions/{}/gradle.properties'.format(subproject), 'game_versions')
+			game_versions = read_prop(f'versions/{subproject}/gradle.properties', 'game_versions')
 			game_versions = game_versions.strip().replace('\r', '').replace('\n', ', ')
-			file_paths = glob.glob('build-artifacts/{}/build/libs/*.jar'.format(subproject))
+			file_paths = glob.glob(f'build-artifacts/{subproject}/build/libs/*.jar')
 			file_paths = [fp for fp in sorted(file_paths) if all(not fp.endswith(f'-{classifier}.jar') for classifier in ['sources', 'dev', 'shadow'])]
 			if len(file_paths) == 0:
 				file_name = '*not found*'
@@ -62,20 +71,38 @@ def main():
 				if len(file_paths) > 1:
 					warnings.append('Found too many build files in subproject {}: {}'.format(subproject, ', '.join(file_paths)))
 
-			f.write('| {} | {} | {} | {} | {} |\n'.format(subproject, game_versions, file_name, file_size, sha256))
+			f.write(f'| {subproject} | {game_versions} | {file_name} | {file_size} | {sha256} |\n')
+		f.write('\n')
+
+		f.write('## Artifact Files\n\n')
+		f.write('| Artifact | For | Size | Digest | \n')
+		f.write('| --- | --- | --- | --- |\n')
+		for artifact_name, artifact_usage in [
+			('mod-jars', 'Players who want to grab and install the mod jar into their Minecraft clients'),
+			('build-artifacts', 'Mod developers who want to inspect the complete build artifacts'),
+		]:
+			artifact_display_name = f'`{artifact_name}`'
+			artifact_size = 'unknown'
+			artifact_digest = 'unknown'
+			if artifact_name in artifacts:
+				# https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28#list-workflow-run-artifacts
+				artifact: dict = artifacts[artifact_name]
+				try:
+					download_url = f'https://github.com/{os.environ["GITHUB_REPOSITORY"]}/actions/runs/{artifact["workflow_run"]["id"]}/artifacts/{artifact["id"]}'
+					artifact_display_name = f'[`{artifact_name}`]({download_url})'
+					artifact_size = f'{artifact["size_in_bytes"]} B'
+					artifact_digest = f'`{artifact["digest"]}`'
+				except Exception as e:
+					warnings.append(f'Failed to collect artifact info for {artifact_name}: {e} -- {artifact}')
+
+			f.write(f'| {artifact_display_name} | {artifact_usage} | {artifact_size} | {artifact_digest} |\n')
+		f.write('\n')
 
 		if len(warnings) > 0:
-			f.write('\n### Warnings\n\n')
+			f.write('## Warnings\n\n')
 			for warning in warnings:
 				f.write('- {}\n'.format(warning))
-
-		f.write('\n')
-		f.write('## How to choose the artifact to download\n\n')
-		f.write('| Artifact | Description | File | Size | SHA-256 |\n')
-		f.write('| --- | --- | --- | --- | --- |\n')
-		f.write('- `mod-jars`: Download this if you want to grab the built mod jar to your Minecraft client\n')
-		f.write('- `build-artifacts`: Download this if you are a developer and want to inspect the complete build artifacts\n')
-		f.write('\n')
+			f.write('\n')
 
 
 if __name__ == '__main__':

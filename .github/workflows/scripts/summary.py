@@ -75,7 +75,8 @@ def main():
 		f.write('\n')
 
 		f.write('## Artifact Files\n\n')
-		f.write('| Artifact | For | Size | Digest | \n')
+		all_digests_are_sha256 = all(artifact['digest'].startswith('sha256:') for artifact in artifacts.values())
+		f.write('| Artifact | For | Size | {} | \n'.format('SHA-256' if all_digests_are_sha256 else 'Digest'))
 		f.write('| --- | --- | --- | --- |\n')
 		for artifact_name, artifact_usage in [
 			('mod-jars', 'Players who want to grab and install the mod jar into their Minecraft clients'),
@@ -88,10 +89,10 @@ def main():
 				# https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28#list-workflow-run-artifacts
 				artifact: dict = artifacts[artifact_name]
 				try:
-					download_url = f'https://github.com/{os.environ["GITHUB_REPOSITORY"]}/actions/runs/{artifact["workflow_run"]["id"]}/artifacts/{artifact["id"]}'
+					download_url = f'{os.environ["GITHUB_SERVER_URL"]}/{os.environ["GITHUB_REPOSITORY"]}/actions/runs/{os.environ["GITHUB_RUN_ID"]}/artifacts/{artifact["id"]}'
 					artifact_display_name = f'[`{artifact_name}`]({download_url})'
 					artifact_size = f'{artifact["size_in_bytes"]} B'
-					artifact_digest = f'`{artifact["digest"]}`'
+					artifact_digest = '`{}`'.format(artifact["digest"].split(':', 1)[-1] if all_digests_are_sha256 else artifact["digest"])
 				except Exception as e:
 					warnings.append(f'Failed to collect artifact info for {artifact_name}: {e} -- {artifact}')
 

@@ -68,7 +68,7 @@ jobs:
       - build
     runs-on: ubuntu-latest
 
-    # allow the mod publish step to add asserts to release
+    # allow the mod publish step to add assets to release
     # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
     permissions:
       contents: write

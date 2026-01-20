@@ -75,6 +75,7 @@ jobs:
 
     strategy:
       matrix: ${{ fromJson(needs.matrix_prep.outputs.matrix) }}
+      fail-fast: false
       max-parallel: 4
 
     steps:

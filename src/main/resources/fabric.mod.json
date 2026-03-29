@@ -13,7 +13,7 @@
     "sources": "https://github.com/Fallen-Breath/fabric-mod-template"
   },
 
-  "icon": "assets/template_mod/icon.png",
+  "icon": "icon.png",
 
   "environment": "*",
   "entrypoints": {

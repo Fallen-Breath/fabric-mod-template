@@ -1,6 +1,9 @@
+final int mcVersion = project.mcVersion
+final boolean unobfuscated = mcVersion >= 26_00_00
+
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.hierynomus.license'
-apply plugin: 'dev.architectury.loom'
+apply plugin: unobfuscated ? 'net.fabricmc.fabric-loom' : 'dev.architectury.loom'
 apply plugin: 'com.replaymod.preprocess'
 apply plugin: 'me.fallenbreath.yamlang'
 
@@ -8,7 +11,6 @@ def mod_brand = (loom.platform.get() as String).toLowerCase()
 assert mod_brand in ['fabric', 'forge', 'neoforge']
 assert project.name.endsWith('-' + mod_brand)  // optional check
 
-int mcVersion = project.mcVersion
 preprocess {
 	vars.put("MC", mcVersion)
 	vars.put("FABRIC", mod_brand == 'fabric' ? 1 : 0)
@@ -20,35 +22,48 @@ preprocess {
 repositories {
 	maven {
 		url = 'https://maven.parchmentmc.org'
+		content { includeGroup('org.parchmentmc.data') }
 	}
 	maven {
 		url = 'https://jitpack.io'
+		content { includeGroupAndSubgroups('com.github') }
 	}
 	maven {
 		url = 'https://maven.fallenbreath.me/releases'
+		content { includeGroup('me.fallenbreath') }
 	}
 	maven {
 		url = 'https://maven.neoforged.net/releases'
 	}
 }
 
-// https://github.com/FabricMC/fabric-loader/issues/783
-configurations {
-	modRuntimeOnly.exclude group: 'net.fabricmc', module: 'fabric-loader'
-}
-
 dependencies {
+	def processDependency = { dep ->
+		// https://github.com/FabricMC/fabric-loader/issues/783
+		if (dep instanceof ModuleDependency) {
+			if (!(dep.group == 'net.fabricmc' && dep.name == 'fabric-loader')) {
+				dep.exclude group: 'net.fabricmc', module: 'fabric-loader'
+			}
+		}
+		return dep
+	}
+	def autoImplementation = { Object... args -> processDependency(unobfuscated ? implementation(*args) : modImplementation(*args)) }
+	def autoRuntimeOnly = { Object... args -> processDependency(unobfuscated ? runtimeOnly(*args) : modRuntimeOnly(*args)) }
+	def autoCompileOnly = { Object... args -> processDependency(unobfuscated ? compileOnly(*args) : modCompileOnly(*args)) }
+
 	// loom
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.layered() {
-        officialMojangMappings()
-        if (project.parchment_version.size() > 0) {
-            parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
-        }
-    }
+	if (!unobfuscated) {
+		mappings loom.layered() {
+			officialMojangMappings()
+			if (project.parchment_version.size() > 0) {
+				parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
+			}
+		}
+	}
 
 	if (mod_brand == 'fabric') {
-		modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+		autoImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 	} else if (mod_brand == 'forge') {
 		forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 	} else if (mod_brand == 'neoforge') {
@@ -57,7 +72,7 @@ dependencies {
 
 	// runtime mods
 //	if (mcVersion < 11904 && mod_brand == 'fabric') {
-//		modRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
+//		autoRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
 //	}
 
 	// dependencies
@@ -72,7 +87,9 @@ String MOD_ICON_PATH = 'assets/template_mod/icon.png'
 String MIXIN_CONFIG_PATH = 'template_mod.mixins.json'
 String LANG_DIR = 'assets/template_mod/lang'
 JavaVersion JAVA_COMPATIBILITY
-if (mcVersion >= 12005 && !(mcVersion < 12100 && mod_brand == 'forge')) {
+if (mcVersion >= 260000) {
+	JAVA_COMPATIBILITY = JavaVersion.VERSION_25
+} else if (mcVersion >= 12005 && !(mcVersion < 12100 && mod_brand == 'forge')) {
 	JAVA_COMPATIBILITY = JavaVersion.VERSION_21
 } else if (mcVersion >= 11800) {
 	JAVA_COMPATIBILITY = JavaVersion.VERSION_17

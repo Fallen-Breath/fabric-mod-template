@@ -5,6 +5,7 @@ plugins {
 	id 'maven-publish'
 	id 'com.github.hierynomus.license' version '0.16.1' apply false
 	id 'dev.architectury.loom' version '1.13-SNAPSHOT' apply false
+	id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT' apply false
 
 	// https://github.com/ReplayMod/preprocessor
 	// https://github.com/Fallen-Breath/preprocessor
@@ -20,7 +21,7 @@ def linkNode(Node src, Node dst) {
 }
 
 preprocess {
-    strictExtraMappings = false
+	strictExtraMappings = false
 
 	def settings = new JsonSlurper().parseText(file('settings.json').text)
 	def all_versions = new ArrayList<>(settings.versions)
@@ -49,6 +50,11 @@ preprocess {
 			default:
 				linkNode(all_nodes["${mc_version}-fabric"], all_nodes[version])
 		}
+	}
+
+	// See https://github.com/Fallen-Breath/fabric-mod-template/blob/1d72d77a1c5ce0bf060c2501270298a12adab679/build.gradle#L55-L63
+	for (final def node in getNodes()) {
+		findProject(node.project).ext.mcVersion = node.mcVersion
 	}
 }
 

@@ -20,7 +20,7 @@
 
 package me.fallenbreath.template_mod;
 
-//#if MC >= 11802
+//#if MC >= 1.18.2
 //$$ import com.mojang.logging.LogUtils;
 //$$ import org.slf4j.Logger;
 //#else

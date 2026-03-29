@@ -229,6 +229,14 @@ jar {
 	}
 }
 
+if (!unobfuscated) {
+	remapJar {
+		// Fix "Mapping source name conflicts detected" error on remapJar task
+		// https://discord.com/channels/792699517631594506/1245758973345398834
+		enabled = !(mcVersion >= 12005 && mod_brand == 'forge')
+	}
+}
+
 // https://github.com/hierynomus/license-gradle-plugin
 license {
 	// use "gradle licenseFormat" to apply license headers

@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 plugins {
 	id 'maven-publish'
 	id 'com.github.hierynomus.license' version '0.16.1' apply false
-	id 'dev.architectury.loom' version '1.13-SNAPSHOT' apply false
+	id 'dev.architectury.loom' version '1.14-SNAPSHOT' apply false
 	id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT' apply false
 
 	// https://github.com/ReplayMod/preprocessor

@@ -187,11 +187,6 @@ processResources {
 	filesMatching(MIXIN_CONFIG_PATH) {
 		filter { s -> s.replace('{{COMPATIBILITY_LEVEL}}', "JAVA_${MIXIN_COMPATIBILITY_LEVEL.ordinal() + 1}") }
 	}
-
-	if (mod_brand == 'forge' || mod_brand == 'neoforge') {
-		// forge requires the mod icon file to be at the resource root
-		filesMatching(MOD_ICON_PATH) { f -> f.path = new File(f.path).getName() }
-	}
 }
 
 // https://github.com/Fallen-Breath/yamlang

@@ -89,7 +89,7 @@ String LANG_DIR = 'assets/template_mod/lang'
 JavaVersion JAVA_COMPATIBILITY
 if (mcVersion >= 260000) {
 	JAVA_COMPATIBILITY = JavaVersion.VERSION_25
-} else if (mcVersion >= 12005 && !(mcVersion < 12100 && mod_brand == 'forge')) {
+} else if (mcVersion >= 12005) {
 	JAVA_COMPATIBILITY = JavaVersion.VERSION_21
 } else if (mcVersion >= 11800) {
 	JAVA_COMPATIBILITY = JavaVersion.VERSION_17
@@ -221,14 +221,6 @@ jar {
 	inputs.property "archives_base_name", project.archives_base_name
 	from(rootProject.file('LICENSE')) {
 		rename { "${it}_${inputs.properties.archives_base_name}" }
-	}
-}
-
-if (!unobfuscated) {
-	remapJar {
-		// Fix "Mapping source name conflicts detected" error on remapJar task
-		// https://discord.com/channels/792699517631594506/1245758973345398834
-		enabled = !(mcVersion >= 12005 && mod_brand == 'forge')
 	}
 }
 

@@ -71,7 +71,7 @@ dependencies {
 	} else if (mod_brand == 'neoforge') {
 		neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 	}
-	compileOnly 'com.github.Fallen-Breath:blacksmith-stubs:3407c0e607'
+	compileOnly 'me.fallenbreath:blacksmith-stubs:0.1.0'
 
 	// runtime mods
 //	if (mcVersion < 11904 && mod_brand == 'fabric') {

@@ -29,26 +29,19 @@ import org.apache.logging.log4j.Logger;
 //#endif
 
 //#if FABRIC
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 //#elseif FORGE
 //$$ import net.minecraftforge.fml.ModList;
-//$$ import net.minecraftforge.fml.common.Mod;
 //$$ import net.minecraftforge.forgespi.language.IModInfo;
 //#elseif NEOFORGE
 //$$ import net.neoforged.fml.ModList;
-//$$ import net.neoforged.fml.common.Mod;
 //$$ import net.neoforged.neoforgespi.language.IModInfo;
 //#endif
 
-//#if FORGE_LIKE
-//$$ @Mod(TemplateMod.MOD_ID)
-//#endif
+@net.minecraftforge.fml.common.Mod(TemplateMod.MOD_ID)
+@net.neoforged.fml.common.Mod(TemplateMod.MOD_ID)
 public class TemplateMod
-		//#if FABRIC
-		implements ModInitializer
-		//#endif
 {
 	public static final Logger LOGGER =
 			//#if MC >= 11802
@@ -58,32 +51,61 @@ public class TemplateMod
 			//#endif
 
 	public static final String MOD_ID = "template_mod";
+
+	//#if !MERGED
 	public static String MOD_VERSION = "unknown";
 	public static String MOD_NAME = "unknown";
+	//#endif
 
 	//#if FABRIC
-	@Override
-	public void onInitialize()
+	public void fabricInit()
 	{
-		ModMetadata metadata = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(RuntimeException::new).getMetadata();
-		MOD_NAME = metadata.getName();
-		MOD_VERSION = metadata.getVersion().getFriendlyString();
+		//#if !MERGED
+		FabricMeta.load();
 		LOGGER.info("Hello {} v{} from fabric!", MOD_NAME, MOD_VERSION);
-		this.init();
+		//#endif
+		this.commonInit();
 	}
 	//#elseif FORGE_LIKE
 	//$$ public TemplateMod()
 	//$$ {
-	//$$ 	IModInfo modInfo = ModList.get().getModContainerById(MOD_ID).orElseThrow(RuntimeException::new).getModInfo();
-	//$$ 	MOD_NAME = modInfo.getDisplayName();
-	//$$ 	MOD_VERSION = modInfo.getVersion().toString();
+	//$$ 	this.forgeInit();
+	//$$ }
+	//$$
+	//$$ public void forgeInit()
+	//$$ {
+	//$$ 	ForgeMeta.load();
 	//$$ 	LOGGER.info("Hello {} v{} from forge-like!", MOD_NAME, MOD_VERSION);
-	//$$ 	this.init();
+	//$$ 	this.commonInit();
 	//$$ }
 	//#endif
 
-	private void init()
+	private void commonInit()
 	{
 		// common init here
 	}
+
+	//#if FABRIC && !MERGED
+	private static class FabricMeta
+	{
+		public static void load()
+		{
+			ModMetadata metadata = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(RuntimeException::new).getMetadata();
+			MOD_NAME = metadata.getName();
+			MOD_VERSION = metadata.getVersion().getFriendlyString();
+		}
+	}
+	//#endif
+
+	//#if FORGE_LIKE
+	//$$ private static class ForgeMeta
+	//$$ {
+	//$$ 	public static void load()
+	//$$ 	{
+	//$$ 		IModInfo modInfo = ModList.get().getModContainerById(MOD_ID).orElseThrow(RuntimeException::new).getModInfo();
+	//$$ 		MOD_NAME = modInfo.getDisplayName();
+	//$$ 		MOD_VERSION = modInfo.getVersion().toString();
+	//$$ 	}
+	//$$ }
+	//#endif
 }

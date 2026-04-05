@@ -7,16 +7,18 @@ apply plugin: unobfuscated ? 'net.fabricmc.fabric-loom' : 'dev.architectury.loom
 apply plugin: 'com.replaymod.preprocess'
 apply plugin: 'me.fallenbreath.yamlang'
 
-def mod_brand = (loom.platform.get() as String).toLowerCase()
-assert mod_brand in ['fabric', 'forge', 'neoforge']
-assert project.name.endsWith('-' + mod_brand)  // optional check
+def mod_brand = project.name.split('-').last()
+assert (loom.platform.get() as String).toLowerCase() == (mod_brand == 'merged' ? 'fabric' : mod_brand)
+assert mod_brand in ['fabric', 'forge', 'neoforge', 'merged']
+assert (mod_brand == 'merged') == unobfuscated  // that's the current workaround
 
 preprocess {
 	vars.put("MC", mcVersion)
-	vars.put("FABRIC", mod_brand == 'fabric' ? 1 : 0)
+	vars.put("FABRIC", mod_brand in ['fabric', 'merged'] ? 1 : 0)
 	vars.put("FORGE", mod_brand == 'forge' ? 1 : 0)
 	vars.put("NEOFORGE", mod_brand == 'neoforge' ? 1 : 0)
 	vars.put("FORGE_LIKE", mod_brand in ['forge', 'neoforge'] ? 1 : 0)
+	vars.put("MERGED", mod_brand == 'merged' ? 1 : 0)
 }
 
 repositories {
@@ -62,13 +64,14 @@ dependencies {
 		}
 	}
 
-	if (mod_brand == 'fabric') {
+	if (mod_brand in ['fabric', 'merged']) {
 		autoImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 	} else if (mod_brand == 'forge') {
 		forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 	} else if (mod_brand == 'neoforge') {
 		neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 	}
+	compileOnly 'com.github.Fallen-Breath:blacksmith-stubs:3407c0e607'
 
 	// runtime mods
 //	if (mcVersion < 11904 && mod_brand == 'fabric') {
@@ -138,49 +141,76 @@ String fullProjectVersion, fullArtifactVersion
 //   fullArtifactVersion     1.0.3-mc1.15.2-fabric-SNAPSHOT    (maven artifact version)
 
 group = project.maven_group
+def modBrandSuffix = mod_brand == 'merged' ? '' : '-' + mod_brand
 if (System.getenv("JITPACK") == "true") {
 	// move mc version into archivesBaseName, so jitpack will be able to organize archives from multiple subprojects correctly
-	base.archivesName = project.archives_base_name + '-mc' + project.minecraft_version + '-' + mod_brand
+	base.archivesName = project.archives_base_name + '-mc' + project.minecraft_version + modBrandSuffix
 	fullProjectVersion = 'v' + project.mod_version + modVersionSuffix
 	fullArtifactVersion = artifactVersion + artifactVersionSuffix
 } else {
 	base.archivesName = project.archives_base_name
-	fullProjectVersion = 'v' + project.mod_version + '-mc' + project.minecraft_version + '-' + mod_brand + modVersionSuffix
-	fullArtifactVersion = artifactVersion + '-mc' + project.minecraft_version + '-' + mod_brand + artifactVersionSuffix
+	fullProjectVersion = 'v' + project.mod_version + '-mc' + project.minecraft_version + modBrandSuffix + modVersionSuffix
+	fullArtifactVersion = artifactVersion + '-mc' + project.minecraft_version + modBrandSuffix + artifactVersionSuffix
 }
 version = fullProjectVersion
 
 // See https://youtrack.jetbrains.com/issue/IDEA-296490
 // if IDEA complains about "Cannot resolve resource filtering of MatchingCopyAction" and you want to know why
 processResources {
-	def modProperties = [
-			"id"                  : project.mod_id,
-			"name"                : project.mod_name,
-			"version"             : fullModVersion,
-			"minecraft_dependency": project.minecraft_dependency,
-	]
-	inputs.properties(modProperties)
 
-	def good_files = [] as Set
-	def all_files = [] as Set
+	Set<String> good_files = [] as Set
+	Map<String, String> all_files = [:]  // path -> brand
 	[
-			'fabric': ['fabric.mod.json'],
-			'forge': ['META-INF', 'META-INF/mods.toml', 'pack.mcmeta'],
+			'fabric'  : ['fabric.mod.json'],
+			'forge'   : ['META-INF', 'META-INF/mods.toml', 'pack.mcmeta'],
 			'neoforge': ['META-INF', 'META-INF/neoforge.mods.toml', 'pack.mcmeta'],
 	].forEach { brand, paths ->
-		all_files.addAll(paths)
+		paths.forEach { path ->
+			all_files[path] = brand
+		}
 		if (brand == mod_brand) {
 			good_files.addAll(paths)
 		}
 	}
-	all_files.forEach { it2 ->
-		def path = it2 as String
-		if (good_files.contains(path)) {
+
+	if (mod_brand == 'merged') {
+		def modProperties = [
+				"id"     : project.mod_id,
+				"name"   : project.mod_name,
+				"version": fullModVersion,
+		]
+		def fabricModProperties = modProperties + [
+				"minecraft_dependency": project.fabric_minecraft_dependency,
+		]
+		def forgeLikeModProperties = modProperties + [
+				"minecraft_dependency": project.forge_minecraft_dependency,
+		]
+		inputs.properties(fabricModProperties)
+		inputs.properties(forgeLikeModProperties)
+
+		all_files.forEach { path, brand ->
 			filesMatching(path) {
-				expand modProperties
+				expand (brand == 'fabric' ? fabricModProperties : forgeLikeModProperties)
 			}
-		} else {
-			exclude path
+		}
+
+	} else {
+		def modProperties = [
+				"id"                  : project.mod_id,
+				"name"                : project.mod_name,
+				"version"             : fullModVersion,
+				"minecraft_dependency": project.minecraft_dependency,
+		]
+		inputs.properties(modProperties)
+
+		all_files.forEach { path, _ ->
+			if (good_files.contains(path)) {
+				filesMatching(path) {
+					expand modProperties
+				}
+			} else {
+				exclude path
+			}
 		}
 	}
 

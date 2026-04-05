@@ -18,7 +18,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.fallenbreath.template_mod.TemplateMod"
+      "me.fallenbreath.template_mod.TemplateMod::fabricInit"
     ]
   },
   "mixins": [

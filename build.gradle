@@ -41,7 +41,7 @@ preprocess {
 		def (mc_version, mod_brand) = version.split("-")
 		def node = all_nodes[version]
 		switch (mod_brand) {
-			case "fabric":
+			case ["fabric", "merged"]:
 				if (prev_fabric_node != null) {
 					linkNode(prev_fabric_node, all_nodes[version])
 				}

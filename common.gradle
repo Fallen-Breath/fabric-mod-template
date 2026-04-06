@@ -252,6 +252,11 @@ jar {
 	from(rootProject.file('LICENSE')) {
 		rename { "${it}_${inputs.properties.archives_base_name}" }
 	}
+	if (mod_brand == 'merged') {
+		manifest {
+			attributes 'MixinConfigs': MIXIN_CONFIG_PATH  // forge needs this, and it doesn't hurt fabric
+		}
+	}
 }
 
 // https://github.com/hierynomus/license-gradle-plugin

@@ -12,6 +12,7 @@
     "homepage": "https://modrinth.com",
     "sources": "https://github.com/Fallen-Breath/fabric-mod-template"
   },
+  "license": "LGPL-3.0",
 
   "icon": "icon.png",
 

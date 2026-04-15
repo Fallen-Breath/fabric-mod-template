@@ -103,6 +103,11 @@ if (mcVersion >= 260000) {
 }
 JavaVersion MIXIN_COMPATIBILITY_LEVEL = JAVA_COMPATIBILITY
 
+// FIXME: forge (at least 26.1.2-64.0.1) for mc26.1 does not recognize mixin compatibility level JAVA_25 yet
+if (MIXIN_COMPATIBILITY_LEVEL >= JavaVersion.VERSION_25) {
+	MIXIN_COMPATIBILITY_LEVEL = JavaVersion.VERSION_21
+}
+
 loom {
 	def commonVmArgs = ['-Dmixin.debug.export=true', '-Dmixin.debug.countInjections=true']
 	runConfigs.configureEach {

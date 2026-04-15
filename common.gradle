@@ -157,7 +157,6 @@ version = fullProjectVersion
 // See https://youtrack.jetbrains.com/issue/IDEA-296490
 // if IDEA complains about "Cannot resolve resource filtering of MatchingCopyAction" and you want to know why
 processResources {
-
 	Set<String> good_files = [] as Set
 	Map<String, String> all_files = [:]  // path -> brand
 	[

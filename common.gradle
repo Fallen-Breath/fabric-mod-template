@@ -86,7 +86,7 @@ dependencies {
 //	include(annotationProcessor(implementation("io.github.llamalad7:mixinextras-${mod_brand}:${project.mixinextras_version}")))
 }
 
-String MOD_ICON_PATH = 'assets/template_mod/icon.png'
+String MOD_ICON_PATH = 'icon.png'
 String MIXIN_CONFIG_PATH = 'template_mod.mixins.json'
 String LANG_DIR = 'assets/template_mod/lang'
 JavaVersion JAVA_COMPATIBILITY

@@ -28,17 +28,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 //#endif
 
-//#if FABRIC
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.metadata.ModMetadata;
-//#elseif FORGE
-//$$ import net.minecraftforge.fml.ModList;
-//$$ import net.minecraftforge.forgespi.language.IModInfo;
-//#elseif NEOFORGE
-//$$ import net.neoforged.fml.ModList;
-//$$ import net.neoforged.neoforgespi.language.IModInfo;
-//#endif
-
 @net.minecraftforge.fml.common.Mod(TemplateMod.MOD_ID)
 @net.neoforged.fml.common.Mod(TemplateMod.MOD_ID)
 public class TemplateMod
@@ -52,60 +41,14 @@ public class TemplateMod
 
 	public static final String MOD_ID = "template_mod";
 
-	//#if !MERGED
-	public static String MOD_VERSION = "unknown";
-	public static String MOD_NAME = "unknown";
-	//#endif
-
-	//#if FABRIC
-	public void fabricInit()
+	public static void fabricInit()
 	{
-		//#if !MERGED
-		FabricMeta.load();
-		LOGGER.info("Hello {} v{} from fabric!", MOD_NAME, MOD_VERSION);
-		//#endif
-		this.commonInit();
+		//noinspection InstantiationOfUtilityClass
+		new TemplateMod();
 	}
-	//#elseif FORGE_LIKE
-	//$$ public TemplateMod()
-	//$$ {
-	//$$ 	this.forgeInit();
-	//$$ }
-	//$$
-	//$$ public void forgeInit()
-	//$$ {
-	//$$ 	ForgeMeta.load();
-	//$$ 	LOGGER.info("Hello {} v{} from forge-like!", MOD_NAME, MOD_VERSION);
-	//$$ 	this.commonInit();
-	//$$ }
-	//#endif
 
-	private void commonInit()
+	public TemplateMod()
 	{
 		// common init here
 	}
-
-	//#if FABRIC && !MERGED
-	private static class FabricMeta
-	{
-		public static void load()
-		{
-			ModMetadata metadata = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(RuntimeException::new).getMetadata();
-			MOD_NAME = metadata.getName();
-			MOD_VERSION = metadata.getVersion().getFriendlyString();
-		}
-	}
-	//#endif
-
-	//#if FORGE_LIKE
-	//$$ private static class ForgeMeta
-	//$$ {
-	//$$ 	public static void load()
-	//$$ 	{
-	//$$ 		IModInfo modInfo = ModList.get().getModContainerById(MOD_ID).orElseThrow(RuntimeException::new).getModInfo();
-	//$$ 		MOD_NAME = modInfo.getDisplayName();
-	//$$ 		MOD_VERSION = modInfo.getVersion().toString();
-	//$$ 	}
-	//$$ }
-	//#endif
 }

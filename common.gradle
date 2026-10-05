@@ -34,6 +34,7 @@ dependencies {
 	}
 	def autoImplementation = { Object... args -> processDependency(unobfuscated ? implementation(*args) : modImplementation(*args)) }
 	def autoRuntimeOnly = { Object... args -> processDependency(unobfuscated ? runtimeOnly(*args) : modRuntimeOnly(*args)) }
+	def autoLocalRuntime = { Object... args -> processDependency(unobfuscated ? localRuntime(*args) : modLocalRuntime(*args)) }
 	def autoCompileOnly = { Object... args -> processDependency(unobfuscated ? compileOnly(*args) : modCompileOnly(*args)) }
 
 	// loom
@@ -53,7 +54,7 @@ dependencies {
 //		autoRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
 //	}
 //	// [FEATURE] MIXIN_AUDITOR
-//	autoRuntimeOnly "me.fallenbreath:mixin-auditor:0.3.0-${unobfuscated ? 'u' : 'o'}"
+//	autoLocalRuntime "me.fallenbreath:mixin-auditor:0.3.0-${unobfuscated ? 'u' : 'o'}"
 
 	// dependencies
 //	def fabricApiModules = []

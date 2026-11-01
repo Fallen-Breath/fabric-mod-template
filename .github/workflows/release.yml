@@ -168,7 +168,7 @@ jobs:
             - Built from: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Publish Minecraft Mods
-        uses: Kira-NT/mc-publish@v3.3.1
+        uses: Kira-NT/mc-publish@v3.3.2
         with:
           # https://modrinth.com/settings/pats
 #          modrinth-id: fo0Bar
